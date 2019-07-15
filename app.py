@@ -69,7 +69,7 @@ def index():
         )
 
 
-    elif (present_skill == 'get_next_task' and bot_memo['index'] == {}):
+    # elif (present_skill == 'get_next_task' and bot_memo['index'] == {}):
 
         return jsonify(
             status=200,
@@ -106,7 +106,7 @@ def index():
             #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
             }],
             conversation={ 
-        'memory': {'index':{}} 
+        'memory': {'index':data['conversation']['memory']['index']} 
         } 
         )
 

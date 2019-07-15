@@ -69,20 +69,6 @@ def index():
         )
 
 
-    # elif (present_skill == 'get_next_task' and bot_memo['index'] == {}):
-
-        return jsonify(
-            status=200,
-            replies=[{
-            'type': 'text',
-            'content': 'no more tasks to approve in your inbox',
-            #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
-            }],
-            conversation={ 
-        'memory': {} 
-        } 
-        )
-
     elif (present_skill == 'repeat'):
         return jsonify(
             status=200,

@@ -114,7 +114,7 @@ def test():
     body_test = r.json()
     return jsonify(
             status = 200,
-            body = body_test)
+            body = r)
 #app.run(port=port)
 
 app.run(port=port, host="0.0.0.0")

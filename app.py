@@ -83,22 +83,22 @@ def index():
         } 
         )
 
-    elif(present_skill == 'test'):
-        #@app.route('/test', methods=['POST'])
-        #r = request.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder='4500000352')?$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-        #body_test = r.json()
-        #s = body_test["d"]["PurchaseOrder_Text"]
-        return jsonify(
-                status=200,
-                replies=[{
-                'type': 'text',
-                'content': 'testing testing',
+    # elif(present_skill == 'test'):
+    #     #@app.route('/test', methods=['POST'])
+    #     #r = request.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder='4500000352')?$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+    #     #body_test = r.json()
+    #     #s = body_test["d"]["PurchaseOrder_Text"]
+    #     return jsonify(
+    #             status=200,
+    #             replies=[{
+    #             'type': 'text',
+    #             'content': 'testing testing',
                 
-                }],
-                conversation={ 
-            'memory': {} 
-            } 
-            )
+    #             }],
+    #             conversation={ 
+    #         'memory': {} 
+    #         } 
+    #         )
  
     else:
 
@@ -114,10 +114,22 @@ def index():
         } 
         )
 
-    
-    
- 
 
+@app.route('/test', methods=['POST'])
+def test():
+    if(present_skill == 'test'):
+        return jsonify(
+                    status=200,
+                    replies=[{
+                    'type': 'text',
+                    'content': 'testing testing',
+                    
+                    }],
+                    conversation={ 
+                'memory': {} 
+                } 
+                )
+    
 
 @app.route('/errors', methods=['POST'])
 def errors():

@@ -117,6 +117,8 @@ def index():
 
 @app.route('/test', methods=['POST'])
 def test():
+    data = json.loads(request.get_data())
+    present_skill = data['conversation']['skill']
     if(present_skill == 'test'):
         return jsonify(
                     status=200,

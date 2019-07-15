@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 #port = 5000
-port = int(os.environ["PATH"])
+port = int(os.environ.get("PORT", 5000))
 
 @app.route('/', methods=['POST'])
 def index():

@@ -128,7 +128,7 @@ def test():
                     
                     }],
                     conversation={ 
-                'memory': {} 
+                'memory': {'index':15} 
                 } 
                 )
     

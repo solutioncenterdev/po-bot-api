@@ -161,11 +161,11 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1
+            return final_reply_string,1  #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,bot_memo['index'],bot_memo['index']
+            return final_reply_string,bot_memo['index'],1
 
     
     elif ((bot_memo['index']) and present_skill == 'get_next_task'):
@@ -233,7 +233,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,bot_memo['index'],bot_memo['index']
+            return final_reply_string,bot_memo['index'],bot_memo['index'] + 1
    
 
     

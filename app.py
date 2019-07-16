@@ -50,7 +50,7 @@ def index():
     
         }],
         conversation={ 
-    'memory': {index} 
+    'memory': {'index':index} 
     } 
     )
 
@@ -165,7 +165,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,bot_memo['index'],1
+            return final_reply_string,1
 
     
     elif ((bot_memo['index']) and present_skill == 'get_next_task'):

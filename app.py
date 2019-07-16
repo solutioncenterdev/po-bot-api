@@ -40,7 +40,7 @@ def index():
     
   
     #bot_memo_index_prsent_value = data['conversation']['memory']['index']
-    reply,index = query_get_task_with_details(data['conversation']['memory'],present_skill)
+    reply,index,instanceID = query_get_task_with_details(data['conversation']['memory'],present_skill)
     return jsonify(
         status=200,
         replies=[{
@@ -50,7 +50,8 @@ def index():
     
         }],
         conversation={ 
-    'memory': {'index':index} 
+    'memory': {'index':index,
+    'instanceID':instanceID} 
     } 
     )
 
@@ -121,7 +122,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             #print(r.json())
 
             #task details
-            instance_id = body1["d"]["results"][0]["InstanceID"] 
+            #instance_id = body1["d"]["results"][0]["InstanceID"] 
             
 
             #po_header detail
@@ -161,11 +162,11 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,1  #return 1for memory index as no memo is present in the beggining
+            return final_reply_string,1,instance_id  #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,1
+            return final_reply_string,1,instance_id
 
     
     elif ((bot_memo['index']) and present_skill == 'get_next_task'):
@@ -229,17 +230,87 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1
+            return final_reply_string,bot_memo['index'] + 1,instance_id
 
         elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'],bot_memo['index'] + 1
+            return final_reply_string,bot_memo['index'],bot_memo['index'] + 1,instance_id
    
         else:
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],bot_memo['index']
+            return final_reply_string,bot_memo['index'],bot_memo['index'],instance_id
     
-    #elif((bot_memo['index']) and present_skill == 'repeat'):
+    elif((bot_memo['index']) and present_skill == 'repeat'):
+
+        r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+        body1 = r.json()
+        if (body1["d"]["results"] and bot_memo['index'] < len(body1["d"]["results"])):
+            #task details
+            instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
+            task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
+            #print(task_title)
+            scrapped_po_no = task_title.split("order ",1)[1]
+            #print(scrapped_po_no)
+            response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+            
+            
+            response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+
+            body2 = response_po_detail_header.json()
+            body3 = response_po_item_detail.json()
+            #print(r.json())
+
+            #task details
+            #instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
+            
+
+            #po_header detail
+            created_by_user = body2["d"]["CreatedByUser"]
+            SupplierName = body2["d"]["SupplierName"]
+            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+            DocumentCurrency = body2["d"]["DocumentCurrency"]
+            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+
+            final_reply_string = ''
+            concat_string_for_multiple_lineitems = ''
+
+            #po item detail
+            #only show one or two tasks
+            no_of_line_items = len(body3["d"]["results"])
+            for i in range(no_of_line_items):
+                Material = body3["d"]["results"][i]["Material"]
+                Plant = body3["d"]["results"][i]["Plant"]
+                OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+                
+                concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+                    + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+                    + 'OrderQuantity: ' + OrderQuantity + '.\n'
+                    
+
+
+            get_task_string = ''
+            get_task_string_with_header_detail = ''
+
+            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+
+            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
+                + '\n' + 'SupplierName: ' + SupplierName \
+                    + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
+
+            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
+            #print(get_task_string)
+
+
+            #print(final_reply_string)
+            return final_reply_string,bot_memo['index'],instance_id
+
+        elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
+            final_reply_string = 'no more tasks to approve...'
+            return final_reply_string,bot_memo['index'],bot_memo['index'] + 1,instance_id
+   
+        else:
+            final_reply_string = 'I am facing some issues now please try later'
+            return final_reply_string,bot_memo['index'],bot_memo['index'],instance_id
 
 
 

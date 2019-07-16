@@ -38,9 +38,9 @@ def index():
 
     #handling logic
     
-    if (present_skill == 'get_task' and bot_memo == {}):
+    if (present_skill == 'get_task'):
         #bot_memo_index_prsent_value = data['conversation']['memory']['index']
-        reply = query_get_task_with_details(bot_memo,{})
+        reply = query_get_task_with_details(data['conversation']['memory'],0)
         return jsonify(
             status=200,
             replies=[{

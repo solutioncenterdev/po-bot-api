@@ -99,7 +99,7 @@ def index():
         )
 
 def query_get_task_with_details(bot_memo,bot_memo_index_prsent_value):
-    if (bot_memo == {} and bot_memo_index_prsent_value == {}):
+    if (bot_memo == {} and bot_memo_index_prsent_value == 0):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
         if (body1["d"]["results"]):

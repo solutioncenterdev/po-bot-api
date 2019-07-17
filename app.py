@@ -57,49 +57,22 @@ def index():
 
     
 
-    if (present_skill == 'get_next_task' and data['conversation']['memory']['index'] < len(task_list)):
-        reply = query_get_task_with_details(data['conversation']['memory'],present_skill)
     
-        return jsonify(
-            status=200,
-            replies=[{
-            'type': 'text',
-            'content': 'your next task \n'+ task_list[data['conversation']['memory']['index']] + '\n' + task_detail_dict[task_list[data['conversation']['memory']['index']]],
-            #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
-            }],
-            conversation={ 
-        'memory': { 'index': data['conversation']['memory']['index'] + 1} 
-        } 
-        )
-
-
-    elif (present_skill == 'repeat'):
-        return jsonify(
-            status=200,
-            replies=[{
-            'type': 'text',
-            'content': 'your next task \n'+ task_list[data['conversation']['memory']['index']-1] + '\n' + task_detail_dict[task_list[data['conversation']['memory']['index']-1]],
-            #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
-            }],
-            conversation={ 
-        'memory': { 'index': data['conversation']['memory']['index']} 
-        } 
-        )
 
    
-    else:
+    # else:
 
-        return jsonify(
-            status=200,
-            replies=[{
-            'type': 'text',
-            'content': 'no more tasks to approve in your inbox',
-            #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
-            }],
-            conversation={ 
-        'memory': {'index':data['conversation']['memory']['index']} 
-        } 
-        )
+    #     return jsonify(
+    #         status=200,
+    #         replies=[{
+    #         'type': 'text',
+    #         'content': 'no more tasks to approve in your inbox',
+    #         #'content': 'The price of %s is %f BTC and %f USD' % (crypto_name, r.json()['BTC'], r.json()['USD'])
+    #         }],
+    #         conversation={ 
+    #     'memory': {'index':data['conversation']['memory']['index']} 
+    #     } 
+    #     )
 
 def query_get_task_with_details(bot_memo,present_skill):
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):

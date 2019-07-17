@@ -219,8 +219,8 @@ def query_get_task_with_details(bot_memo,present_skill):
         body1 = r.json()
         if (body1["d"]["results"] and bot_memo['index'] < len(body1["d"]["results"])):
             #task details
-            instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
-            task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
+            instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
+            task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]
             #print(task_title)
             scrapped_po_no = task_title.split("order ",1)[1]
             #print(scrapped_po_no)

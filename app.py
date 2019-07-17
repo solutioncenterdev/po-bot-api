@@ -23,20 +23,9 @@ def index():
     present_skill = data['conversation']['skill']
     print(bot_conversation)
 
-    # FETCH BTC/USD/EUR PRICES
-    #here the back end odata api must be called
-    #r = requests.get("https://min-api.cryptocompare.com/data/price?fsym="+crypto_name+"&tsyms=BTC,USD,EUR")
     
 
-    #test task list
-    #these data will be fetched from oddata api later on
-    #call the backend odata api here to get the current task id and the po header and item details
-    task_list = ['task1', 'task2', 'task3']
-    #task_list = []
-    po_header_item_detail = ['po_no: 1 \ncustomer: a', 'po_no: 2 \ncustomer: b', 'po_no: 3 \ncustomer: c']
-    task_detail_dict = dict(zip(task_list,po_header_item_detail))
-
-    #handling logic
+    
     
   
     #bot_memo_index_prsent_value = data['conversation']['memory']['index']
@@ -211,7 +200,7 @@ def query_get_task_with_details(bot_memo,present_skill):
    
         else:
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],bot_memo['index'],instance_id
+            return final_reply_string,bot_memo['index'],instance_id
     
     elif((bot_memo['index']) and present_skill == 'repeat'):
 

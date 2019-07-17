@@ -6,3 +6,4 @@ data = 'hey'
 def query_get_task_with_detail():
     data = data + 'you'
     return print(data)
+    

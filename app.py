@@ -14,7 +14,7 @@ def run(scrapped_po_no):
 
     return response1.json, response2.json
 loop = asyncio.get_event_loop()
-loop.run_until_complete(run(scrapped_po_no))
+#loop.run_until_complete(run(scrapped_po_no))
 app = Flask(__name__)
 #port = 5000
 port = int(os.environ.get("PORT", 5000))

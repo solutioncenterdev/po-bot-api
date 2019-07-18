@@ -53,7 +53,8 @@ def index():
 
     
 def run(scrapped_po_no):
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    #loop = asyncio.get_event_loop()
     future1 = loop.run_in_executor(None, requests.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
     future2 = loop.run_in_executor(None, requests.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
     response1 = yield from future1
@@ -62,6 +63,7 @@ def run(scrapped_po_no):
     return response1.json(), response2.json()
 #loop = asyncio.get_event_loop()
 loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
     
 
    

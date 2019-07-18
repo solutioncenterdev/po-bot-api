@@ -4,6 +4,7 @@ import requests
 import os
 from requests.auth import HTTPBasicAuth
 import asyncio
+import cython
 
 
 # asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -55,7 +56,7 @@ def index():
     } 
     )
 
-@cython.iterable_coroutine  
+ 
 async def run(scrapped_po_no):
     s = requests.Session()
     s.auth = ('pritamsa', 'rupu@0801')

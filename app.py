@@ -67,9 +67,7 @@ async def run(scrapped_po_no):
     response2 = await future2
 
     return response1.json(), response2.json()
-loop = asyncio.get_event_loop()
-loop.run_until_complete(run(scrapped_po_no))
-loop.close()
+
 # loop = asyncio.new_event_loop()
 # asyncio.set_event_loop(loop)
     
@@ -92,7 +90,11 @@ def query_get_task_with_details(bot_memo,present_skill):
             
             
             # response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+            
             body1,body2 = run(scrapped_po_no)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(run(scrapped_po_no))
+            loop.close()
             # body2 = response_po_detail_header.json()
             # body3 = response_po_item_detail.json()
             #print(r.json())

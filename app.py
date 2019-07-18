@@ -122,7 +122,7 @@ def query_get_task_with_details(bot_memo,present_skill):
     elif ((bot_memo['index']) and present_skill == 'get_next_task'):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
-        if ((body1["d"]["results"]) and bot_memo['index'] < len(body1["d"]["results"])):
+        if ((body1["d"]["results"] > 0) and bot_memo['index'] < len(body1["d"]["results"])):
             #task details
             instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
             task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
@@ -182,9 +182,9 @@ def query_get_task_with_details(bot_memo,present_skill):
             #print(final_reply_string)
             return final_reply_string,bot_memo['index'] + 1,instance_id
 
-        elif(bot_memo['index'] >= len(body1["d"]["results"])):
+        elif(body1["d"]["results"] > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'] + 1,instance_id
+            return final_reply_string,bot_memo['index'] ,instance_id
    
         else:
             final_reply_string = 'I am facing some issues now please try later'

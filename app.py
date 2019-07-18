@@ -68,6 +68,8 @@ async def run(scrapped_po_no):
 
     return response1.json(), response2.json()
 loop = asyncio.get_event_loop()
+loop.run_until_complete(run(scrapped_po_no))
+loop.close()
 # loop = asyncio.new_event_loop()
 # asyncio.set_event_loop(loop)
     

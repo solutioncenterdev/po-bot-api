@@ -12,8 +12,10 @@ def run(scrapped_po_no):
     response1 = yield from future1
     response2 = yield from future2
 
-    return response1.json, response2.json
-loop = asyncio.get_event_loop()
+    return response1.json(), response2.json()
+#loop = asyncio.get_event_loop()
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 #loop.run_until_complete(run(scrapped_po_no))
 app = Flask(__name__)
 #port = 5000

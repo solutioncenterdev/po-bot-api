@@ -56,7 +56,7 @@ def index():
     )
 
     
-def run(scrapped_po_no):
+async def run(scrapped_po_no):
     s = requests.Session()
     s.auth = ('pritamsa', 'rupu@0801')
     loop = asyncio.new_event_loop()

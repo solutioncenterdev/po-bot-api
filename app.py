@@ -3,16 +3,7 @@ import json
 import requests
 import os
 from requests.auth import HTTPBasicAuth
-import asyncio
-import cython
 
-
-# asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-# loop= asyncio.get_event_loop()
-
-
-#asyncio.set_event_loop(loop)
-#loop.run_until_complete(run(scrapped_po_no))
 app = Flask(__name__)
 #port = 5000
 port = int(os.environ.get("PORT", 5000))
@@ -22,11 +13,9 @@ def index():
     data = json.loads(request.get_data())  # gets the data from chatbot that is json body of bot memory
     
     
-
-
-    # print(data)
-    # print()
-    # print()
+    print(data)
+    print()
+    print()
     # FETCH THE CRYPTO NAME
     bot_conversation = data['conversation']
     bot_memo = data['conversation']['memory']
@@ -35,7 +24,6 @@ def index():
     print(bot_conversation)
 
     
-
 
     
     
@@ -56,21 +44,8 @@ def index():
     } 
     )
 
- 
-async def run(scrapped_po_no):
-    s = requests.Session()
-    s.auth = ('pritamsa', 'rupu@0801')
-    #loop = asyncio.new_event_loop()
-    loop = asyncio.get_event_loop()
-    future1 = loop.run_in_executor(None, s.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",s.auth)
-    future2 = loop.run_in_executor(None, s.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",s.auth)
-    response1 = await future1
-    response2 = await future2
+    
 
-    return response1.json(), response2.json()
-
-# loop = asyncio.new_event_loop()
-# asyncio.set_event_loop(loop)
     
 
    
@@ -87,17 +62,13 @@ def query_get_task_with_details(bot_memo,present_skill):
             #print(task_title)
             scrapped_po_no = task_title.split("order ",1)[1]
             #print(scrapped_po_no)
-            # response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+            response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
             
             
-            # response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-            
-            body2,body3 = run(scrapped_po_no)
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(run(scrapped_po_no))
-            loop.close()
-            # body2 = response_po_detail_header.json()
-            # body3 = response_po_item_detail.json()
+            response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+
+            body2 = response_po_detail_header.json()
+            body3 = response_po_item_detail.json()
             #print(r.json())
 
             #task details
@@ -148,7 +119,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             return final_reply_string,1,instance_id
 
     
-    '''elif ((bot_memo['index']) and present_skill == 'get_next_task'):
+    elif ((bot_memo['index']) and present_skill == 'get_next_task'):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
         # instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"]
@@ -297,7 +268,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
 
-'''
+
 @app.route('/test', methods=['POST'])
 def test():
     data = json.loads(request.get_data())

@@ -3,4 +3,3 @@ requests==2.21.0
 async-timeout==3.0.1
 asyncio==3.4.3
 aiohttp==3.5.4
-Cython==0.29.12

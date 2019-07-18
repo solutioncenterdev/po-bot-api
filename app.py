@@ -260,11 +260,11 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'],bot_memo['index'] ,instance_id
+            return final_reply_string,bot_memo['index'],bot_memo['index'] ,len(body1["d"]["results"])
    
         else:
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],instance_id
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
 
 
 

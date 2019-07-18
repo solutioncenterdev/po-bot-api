@@ -81,8 +81,8 @@ def query_get_task_with_details(bot_memo,present_skill):
             
             #return fight(responses)
 
-            body2 = responses.json()
-            body3 = responses.json()
+            body2 = responses[0]
+            body3 = responses[1]
 
             # body2 = response_po_detail_header.json()
             # body3 = response_po_item_detail.json()

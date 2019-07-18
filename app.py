@@ -198,7 +198,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
-        if (body1["d"]["results"] and bot_memo['index'] < len(body1["d"]["results"])):
+        if (body1["d"]["results"] and bot_memo['index'] <= len(body1["d"]["results"])):
             #task details
             instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
             task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]

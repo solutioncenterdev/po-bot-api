@@ -55,7 +55,7 @@ def index():
     } 
     )
 
-    
+@cython.iterable_coroutine  
 async def run(scrapped_po_no):
     s = requests.Session()
     s.auth = ('pritamsa', 'rupu@0801')

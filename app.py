@@ -53,10 +53,12 @@ def index():
 
     
 def run(scrapped_po_no):
+    s = requests.Session()
+    s.auth = ('pritamsa', 'rupu@0801')
     loop = asyncio.new_event_loop()
     #loop = asyncio.get_event_loop()
-    future1 = loop.run_in_executor(None, requests.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-    future2 = loop.run_in_executor(None, requests.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+    future1 = loop.run_in_executor(None, s.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",s.auth)
+    future2 = loop.run_in_executor(None, s.get, "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",s.auth)
     response1 = yield from future1
     response2 = yield from future2
 

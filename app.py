@@ -79,7 +79,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             responses = loop.run_until_complete(asyncio.gather(fetch("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"),fetch("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json")))
             
-            return fight(responses)
+            #return fight(responses)
 
             body2 = responses[0].json()
             body3 = responses[1].json()

@@ -110,7 +110,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             get_task_string = ''
             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+            get_task_string = task_title + '\n'
 
             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
                 + '\n' + 'SupplierName: ' + SupplierName \
@@ -168,7 +168,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             get_task_string = ''
             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+            get_task_string = task_title + '\n'
 
             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
                 + '\n' + 'SupplierName: ' + SupplierName \
@@ -232,7 +232,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             get_task_string = ''
             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+            get_task_string = task_title + '\n'
 
             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
                 + '\n' + 'SupplierName: ' + SupplierName \

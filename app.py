@@ -6,6 +6,9 @@ import aiohttp
 import async_timeout
 import asyncio
 from requests.auth import HTTPBasicAuth
+from tornado.platform.asyncio import AnyThreadEventLoopPolicy
+
+asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy)
 
 loop = asyncio.get_event_loop()
 app = Flask(__name__)

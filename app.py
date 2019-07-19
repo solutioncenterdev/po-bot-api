@@ -82,8 +82,10 @@ def query_get_task_with_details(bot_memo,present_skill):
                 response_array.append(x)
                 # print(x)
             print(response_array)
-            body2 = response_po_detail_header.json()
-            body3 = response_po_item_detail.json()
+            body2 = response_array[0]
+            body3 = response_array[1]
+            # body2 = response_po_detail_header.json()
+            # body3 = response_po_item_detail.json()
             #print(r.json())
 
             #task details

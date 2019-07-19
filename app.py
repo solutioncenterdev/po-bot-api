@@ -7,7 +7,7 @@ import grequests
 import requests
 
 
-sys.setrecursionlimit(2000)
+#sys.setrecursionlimit(2000)
 app = Flask(__name__)
 #port = 5000
 port = int(os.environ.get("PORT", 5000))

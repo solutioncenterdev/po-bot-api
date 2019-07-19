@@ -1,7 +1,8 @@
 Flask==1.1.1
 requests==2.21.0
+grequests==0.3.0
 async-timeout==3.0.1
 asyncio==3.4.3
 aiohttp==3.5.4
-grequests==0.3.0
+
 

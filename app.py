@@ -74,7 +74,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             urls = [url1,url2]
 
             rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
-            reque = grequests.imap(rs,size=10)
+            reque = grequests.imap(rs,size=1)
             response_array = []
             for response in reque:
                 print(response)

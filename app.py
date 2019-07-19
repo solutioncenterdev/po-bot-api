@@ -34,22 +34,22 @@ def index():
     
     
     def take_action_async(scrapped_po_no):
-    scrapped_po = scrapped_po_no
-    url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"
-    url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
-    urls = [url1,url2]
-    rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
-    reque = grequests.map(rs,size=10)
-    response_array = []
-    for response in reque:
-        print(response)
-        x = response.json()
-        response_array.append(x)
-        # print(x)
-    #print(response_array)
-    body2 = response_array[0]  #1st url body
-    body3 = response_array[1]
-    return body2,body3
+        scrapped_po = scrapped_po_no
+        url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"
+        url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
+        urls = [url1,url2]
+        rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
+        reque = grequests.map(rs,size=10)
+        response_array = []
+        for response in reque:
+            print(response)
+            x = response.json()
+            response_array.append(x)
+            # print(x)
+        #print(response_array)
+        body2 = response_array[0]  #1st url body
+        body3 = response_array[1]
+        return body2,body3
 
 
 

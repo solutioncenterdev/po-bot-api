@@ -43,4 +43,5 @@ for response in reque:
 #print(response_array)
 body2 = response_array[0]
 body3 = response_array[1]
-print(body3['d']['results'][0]['Material'])
+print(body2["d"]["CreatedByUser"])
+# print(body3['d']['results'][0]['Material'])

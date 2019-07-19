@@ -46,8 +46,19 @@ def index():
     )
 
     
-
-    
+def take_action_async(urls):
+    rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
+    reque = grequests.imap(rs,size=1)
+    response_array = []
+    for response in reque:
+        print(response)
+        x = response.json()
+        response_array.append(x)
+        # print(x)
+    #print(response_array)
+    body2 = response_array[0]  #1st url body
+    body3 = response_array[1]
+    return body2,body3
 
    
    
@@ -72,18 +83,8 @@ def query_get_task_with_details(bot_memo,present_skill):
             url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
             url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
             urls = [url1,url2]
-
-            rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
-            reque = grequests.imap(rs,size=1)
-            response_array = []
-            for response in reque:
-                print(response)
-                x = response.json()
-                response_array.append(x)
-                # print(x)
-            #print(response_array)
-            body2 = response_array[0]  #1st url body
-            body3 = response_array[1] #2nd url body
+            body2,body3 = take_action_async(urls)
+             #2nd url body
             #print(body3['d']['results'][0]['Material'])
             # body2 = response_po_detail_header.json()
             # body3 = response_po_item_detail.json()
@@ -137,172 +138,172 @@ def query_get_task_with_details(bot_memo,present_skill):
             return final_reply_string,1,instance_id
 
     
-    elif ((bot_memo['index']) and present_skill == 'get_next_task'):
-        r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-        body1 = r.json()
-        # instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"]
-        # task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
-        if ((len(body1["d"]["results"])>0) and bot_memo['index'] < len(body1["d"]["results"])):
-            #task details
-            instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
-            task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
-            #print(task_title)
-            scrapped_po_no = task_title.split("order ",1)[1]
-            #print(scrapped_po_no)
-            response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#     elif ((bot_memo['index']) and present_skill == 'get_next_task'):
+#         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#         body1 = r.json()
+#         # instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"]
+#         # task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
+#         if ((len(body1["d"]["results"])>0) and bot_memo['index'] < len(body1["d"]["results"])):
+#             #task details
+#             instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
+#             task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]
+#             #print(task_title)
+#             scrapped_po_no = task_title.split("order ",1)[1]
+#             #print(scrapped_po_no)
+#             response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
             
             
-            response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#             response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
 
-            body2 = response_po_detail_header.json()
-            body3 = response_po_item_detail.json()
-            #print(r.json())
+#             body2 = response_po_detail_header.json()
+#             body3 = response_po_item_detail.json()
+#             #print(r.json())
 
-            #task details
-            #instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
+#             #task details
+#             #instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
             
 
-            #po_header detail
-            created_by_user = body2["d"]["CreatedByUser"]
-            SupplierName = body2["d"]["SupplierName"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
-            DocumentCurrency = body2["d"]["DocumentCurrency"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+#             #po_header detail
+#             created_by_user = body2["d"]["CreatedByUser"]
+#             SupplierName = body2["d"]["SupplierName"]
+#             PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+#             DocumentCurrency = body2["d"]["DocumentCurrency"]
+#             PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
 
-            final_reply_string = ''
-            concat_string_for_multiple_lineitems = ''
+#             final_reply_string = ''
+#             concat_string_for_multiple_lineitems = ''
 
-            #po item detail
-            #only show one or two tasks
-            no_of_line_items = len(body3["d"]["results"])
-            for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material"]
-                Plant = body3["d"]["results"][i]["Plant"]
-                OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+#             #po item detail
+#             #only show one or two tasks
+#             no_of_line_items = len(body3["d"]["results"])
+#             for i in range(no_of_line_items):
+#                 Material = body3["d"]["results"][i]["Material"]
+#                 Plant = body3["d"]["results"][i]["Plant"]
+#                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 
-                concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
-                    + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
-                    + 'OrderQuantity: ' + OrderQuantity + '.\n'
+#                 concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+#                     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+#                     + 'OrderQuantity: ' + OrderQuantity + '.\n'
                     
 
 
-            get_task_string = ''
-            get_task_string_with_header_detail = ''
+#             get_task_string = ''
+#             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+#             get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
 
-            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
-                + '\n' + 'SupplierName: ' + SupplierName \
-                    + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
+#             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
+#                 + '\n' + 'SupplierName: ' + SupplierName \
+#                     + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
-            #print(get_task_string)
+#             final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
+#             #print(get_task_string)
 
 
-            #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1,instance_id
+#             #print(final_reply_string)
+#             return final_reply_string,bot_memo['index'] + 1,instance_id
 
-        elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
+#         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
-            final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"])
+#             final_reply_string = 'no more tasks to approve...'
+#             return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"])
    
-        else:
+#         else:
             
-            final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+#             final_reply_string = 'I am facing some issues now please try later'
+#             return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
     
-    elif((bot_memo['index']) and present_skill == 'repeat'):
+#     elif((bot_memo['index']) and present_skill == 'repeat'):
 
-        r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-        body1 = r.json()
-        if (body1["d"]["results"] and bot_memo['index'] <= len(body1["d"]["results"])):
-            #task details
-            instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
-            task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]
-            #print(task_title)
-            scrapped_po_no = task_title.split("order ",1)[1]
-            #print(scrapped_po_no)
-            response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#         body1 = r.json()
+#         if (body1["d"]["results"] and bot_memo['index'] <= len(body1["d"]["results"])):
+#             #task details
+#             instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
+#             task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]
+#             #print(task_title)
+#             scrapped_po_no = task_title.split("order ",1)[1]
+#             #print(scrapped_po_no)
+#             response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
             
             
-            response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+#             response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
 
-            body2 = response_po_detail_header.json()
-            body3 = response_po_item_detail.json()
-            #print(r.json())
+#             body2 = response_po_detail_header.json()
+#             body3 = response_po_item_detail.json()
+#             #print(r.json())
 
-            #task details
-            #instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
+#             #task details
+#             #instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
             
 
-            #po_header detail
-            created_by_user = body2["d"]["CreatedByUser"]
-            SupplierName = body2["d"]["SupplierName"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
-            DocumentCurrency = body2["d"]["DocumentCurrency"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+#             #po_header detail
+#             created_by_user = body2["d"]["CreatedByUser"]
+#             SupplierName = body2["d"]["SupplierName"]
+#             PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+#             DocumentCurrency = body2["d"]["DocumentCurrency"]
+#             PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
 
-            final_reply_string = ''
-            concat_string_for_multiple_lineitems = ''
+#             final_reply_string = ''
+#             concat_string_for_multiple_lineitems = ''
 
-            #po item detail
-            #only show one or two tasks
-            no_of_line_items = len(body3["d"]["results"])
-            for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material"]
-                Plant = body3["d"]["results"][i]["Plant"]
-                OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+#             #po item detail
+#             #only show one or two tasks
+#             no_of_line_items = len(body3["d"]["results"])
+#             for i in range(no_of_line_items):
+#                 Material = body3["d"]["results"][i]["Material"]
+#                 Plant = body3["d"]["results"][i]["Plant"]
+#                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 
-                concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
-                    + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
-                    + 'OrderQuantity: ' + OrderQuantity + '.\n'
+#                 concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+#                     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+#                     + 'OrderQuantity: ' + OrderQuantity + '.\n'
                     
 
 
-            get_task_string = ''
-            get_task_string_with_header_detail = ''
+#             get_task_string = ''
+#             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
+#             get_task_string = task_title + '\n' + 'instance id : ' + instance_id + '\n'
 
-            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
-                + '\n' + 'SupplierName: ' + SupplierName \
-                    + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
+#             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
+#                 + '\n' + 'SupplierName: ' + SupplierName \
+#                     + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
-            #print(get_task_string)
+#             final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
+#             #print(get_task_string)
 
 
-            #print(final_reply_string)
-            return final_reply_string,bot_memo['index'],instance_id
+#             #print(final_reply_string)
+#             return final_reply_string,bot_memo['index'],instance_id
 
-        elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
-            final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+#         elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
+#             final_reply_string = 'no more tasks to approve...'
+#             return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
    
-        else:
-            final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+#         else:
+#             final_reply_string = 'I am facing some issues now please try later'
+#             return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
 
 
 
 
-@app.route('/test', methods=['POST'])
-def test():
-    data = json.loads(request.get_data())
-    present_skill = data['conversation']['skill']
-    if(present_skill == 'test'):
-        return jsonify(
-                    status=200,
-                    replies=[{
-                    'type': 'text',
-                    'content': 'testing testing',
+# @app.route('/test', methods=['POST'])
+# def test():
+#     data = json.loads(request.get_data())
+#     present_skill = data['conversation']['skill']
+#     if(present_skill == 'test'):
+#         return jsonify(
+#                     status=200,
+#                     replies=[{
+#                     'type': 'text',
+#                     'content': 'testing testing',
                     
-                    }],
-                    conversation={ 
-                'memory': {'index':15} 
-                } 
-                )
+#                     }],
+#                     conversation={ 
+#                 'memory': {'index':15} 
+#                 } 
+#                 )
     
 
 @app.route('/errors', methods=['POST'])

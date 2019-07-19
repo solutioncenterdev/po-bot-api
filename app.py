@@ -65,6 +65,8 @@ def query_get_task_with_details(bot_memo,present_skill):
 
     def take_action_async(scrapped_po_no):
         scrapped_po = scrapped_po_no
+        print('*******************************************************')
+        print(scrapped_po)
         url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"
         url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
         urls = [url1,url2]

@@ -2,23 +2,9 @@ from flask import Flask, request, jsonify
 import json
 import requests
 import os
-import aiohttp
-import async_timeout
-import asyncio
 from requests.auth import HTTPBasicAuth
-from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 
-asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy)
-
-loop = asyncio.get_event_loop()
 app = Flask(__name__)
-
-async def fetch(url):
-    async with aiohttp.ClientSession(auth=aiohttp.BasicAuth(login='pritamsa', password='rupu@0801')) as session, async_timeout.timeout(10):
-        async with session.get(url) as response:
-            return await response.json()
-def fight(responses):
-    return "this is not done...."
 #port = 5000
 port = int(os.environ.get("PORT", 5000))
 
@@ -76,19 +62,13 @@ def query_get_task_with_details(bot_memo,present_skill):
             #print(task_title)
             scrapped_po_no = task_title.split("order ",1)[1]
             #print(scrapped_po_no)
+            response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
             
-            #response_po_detail_header = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-            #response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-
-            responses = loop.run_until_complete(asyncio.gather(fetch("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"),fetch("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json")))
             
-            #return fight(responses)
-            print(responses)
-            body2 = responses[0]
-            body3 = responses[1]
+            response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
 
-            # body2 = response_po_detail_header.json()
-            # body3 = response_po_item_detail.json()
+            body2 = response_po_detail_header.json()
+            body3 = response_po_item_detail.json()
             #print(r.json())
 
             #task details
@@ -139,7 +119,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             return final_reply_string,1,instance_id
 
     
-    '''elif ((bot_memo['index']) and present_skill == 'get_next_task'):
+    elif ((bot_memo['index']) and present_skill == 'get_next_task'):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
         # instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"]
@@ -288,7 +268,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
 
-'''
+
 @app.route('/test', methods=['POST'])
 def test():
     data = json.loads(request.get_data())
@@ -317,4 +297,3 @@ def errors():
 #app.run(port=port)
 
 app.run(port=port, host="0.0.0.0")
-

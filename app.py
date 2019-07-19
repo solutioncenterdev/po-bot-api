@@ -2,9 +2,12 @@ from flask import Flask, request, jsonify
 import json
 import requests
 import os
+import sys
 from requests.auth import HTTPBasicAuth
 import grequests
 
+
+sys.setrecursionlimit(2000)
 app = Flask(__name__)
 #port = 5000
 port = int(os.environ.get("PORT", 5000))

@@ -33,7 +33,7 @@ url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697t
 urls = [url1,url2]
 
 rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
-reque = grequests.imap(rs,size=10)
+reque = grequests.imap(rs,size=2)
 response_array = []
 for response in reque:
     print(response)

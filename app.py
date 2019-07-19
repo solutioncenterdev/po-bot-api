@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify
 import json
-import requests
 import os
 import sys
 from requests.auth import HTTPBasicAuth
 import grequests
+import requests
 
 
 sys.setrecursionlimit(2000)

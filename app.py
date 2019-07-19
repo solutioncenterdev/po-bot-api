@@ -69,21 +69,22 @@ def query_get_task_with_details(bot_memo,present_skill):
             # response_po_item_detail = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
 
             
-            url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
-            url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
+            url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder='4500000365')?sap-client=400&$format=json"
+            url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder='4500000365')/to_PurchaseOrderItem?sap-client=400&$format=json"
             urls = [url1,url2]
 
             rs = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in urls)
-            reque = grequests.imap(rs,size=1)
+            reque = grequests.imap(rs,size=10)
             response_array = []
             for response in reque:
                 print(response)
-                x = response.json
+                x = response.json()
                 response_array.append(x)
                 # print(x)
-            print(response_array)
-            body2 = response_array[0]
-            body3 = response_array[1]
+            #print(response_array)
+            body2 = response_array[0]  #1st url body
+            body3 = response_array[1] #2nd url body
+            #print(body3['d']['results'][0]['Material'])
             # body2 = response_po_detail_header.json()
             # body3 = response_po_item_detail.json()
             #print(r.json())

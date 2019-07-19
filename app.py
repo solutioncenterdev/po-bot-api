@@ -19,9 +19,9 @@ def index():
     data = json.loads(request.get_data())  # gets the data from chatbot that is json body of bot memory
     
     
-    print(data)
-    print()
-    print()
+    # print(data)
+    # print()
+    # print()
     # FETCH THE CRYPTO NAME
     bot_conversation = data['conversation']
     bot_memo = data['conversation']['memory']

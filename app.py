@@ -258,7 +258,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
 
     elif((bot_memo['index']) and present_skill == 'approve'):
-        after_approval_reply = 'successfully approved'
+        after_approval_reply = 'successfully approved, say next to get your next task to approve....'
         approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
         session = requests.Session()
         header = {'x-csrf-token':'Fetch'}
@@ -282,7 +282,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index']-1,present_task_instance_id  #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'],present_task_instance_id  #after this call the "next" task showing skill in bot
 
 
     

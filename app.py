@@ -282,7 +282,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id  #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'] + 1,present_task_instance_id  #after this call the "next" task showing skill in bot
 
 
     

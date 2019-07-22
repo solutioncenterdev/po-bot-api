@@ -187,7 +187,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
-            final_reply_string = 'no more tasks to approve..., say "next" to get your next task with details'
+            final_reply_string = 'no more tasks to approve...'
             return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"])
    
         else:

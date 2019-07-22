@@ -68,6 +68,8 @@ def index():
     'instanceID':instanceID} 
     } 
     )
+
+    
     
 
    
@@ -254,6 +256,34 @@ def query_get_task_with_details(bot_memo,present_skill):
         else:
             final_reply_string = 'I am facing some issues now please try later'
             return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+
+    elif((bot_memo['index']) and present_skill == 'approve'):
+        after_approval_reply = 'successfully approved'
+        approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
+        session = requests.Session()
+        header = {'x-csrf-token':'Fetch'}
+        present_task_instance_id = bot_memo['instanceID']
+
+        response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
+        if (response.status_code != 200):
+            return approval_failure_reply,bot_memo['index'],present_task_instance_id
+        elif (response.status_code == 200):
+            cookie = session.cookies.get_dict()
+            print(cookie)
+
+            csrf = response.headers['x-csrf-token']
+            #print(csrf)
+
+            #post
+            #approve
+            header_2 = {'x-csrf-token':csrf}
+            approve_po = session.post("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header_2,cookies=cookie)
+
+            print('***************************************************************')
+            print(approve_po.status_code)
+
+            return after_approval_reply,bot_memo['index'],present_task_instance_id  #after this call the "next" task showing skill in bot
+
 
     
 

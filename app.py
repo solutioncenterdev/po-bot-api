@@ -178,7 +178,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                 + '\n' + 'SupplierName: ' + SupplierName \
                     + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
+            final_reply_string = "Your next task is : "+"\n" + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say, next to get your next task with details."
             #print(get_task_string)
 
 
@@ -187,7 +187,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
-            final_reply_string = 'no more tasks to approve...'
+            final_reply_string = 'no more tasks to approve..., say "next" to get your next task with details'
             return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"])
    
         else:
@@ -242,7 +242,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                 + '\n' + 'SupplierName: ' + SupplierName \
                     + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems
+            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say, next to get your next task with details."
             #print(get_task_string)
 
 

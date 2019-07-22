@@ -172,13 +172,13 @@ def query_get_task_with_details(bot_memo,present_skill):
             get_task_string = ''
             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n'
+            get_task_string = task_title + '.' + '\n'
 
             get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
-                + '\n' + 'SupplierName: ' + SupplierName \
-                    + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
+                + '.' + '\n' + 'SupplierName: ' + SupplierName \
+                  + '.'  + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.' + '\n'
 
-            final_reply_string = "Your next task is : "+"\n" + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this P.O.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             #print(get_task_string)
 
 

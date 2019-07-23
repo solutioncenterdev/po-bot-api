@@ -121,7 +121,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                 + '.' + '\n' + 'SupplierName: ' + SupplierName \
                     + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
-            final_reply_string = 'you have got, '+ no_of_tasks + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+            final_reply_string = 'you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             
 
             return final_reply_string,1,instance_id  #return 1for memory index as no memo is present in the beggining

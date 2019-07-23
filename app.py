@@ -79,6 +79,7 @@ def query_get_task_with_details(bot_memo,present_skill):
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
+        no_of_tasks = len(body1["d"]["results"])
         if (body1["d"]["results"]):
             #task details
             instance_id = body1["d"]["results"][0]["InstanceID"] 
@@ -114,13 +115,13 @@ def query_get_task_with_details(bot_memo,present_skill):
             get_task_string = ''
             get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n'
+            get_task_string = task_title + '.' + '\n'
 
-            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
-                + '\n' + 'SupplierName: ' + SupplierName \
-                    + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '\n'
+            get_task_string_with_header_detail = 'created by user: ' + created_by_user \
+                + '.' + '\n' + 'SupplierName: ' + SupplierName \
+                    + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+            final_reply_string = 'you have got, '+ no_of_tasks + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             
 
             return final_reply_string,1,instance_id  #return 1for memory index as no memo is present in the beggining
@@ -174,9 +175,9 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             get_task_string = task_title + '.' + '\n'
 
-            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
+            get_task_string_with_header_detail = 'created by user: ' + created_by_user \
                 + '.' + '\n' + 'SupplierName: ' + SupplierName \
-                  + '.'  + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.' + '\n'
+                    + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
             final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this P.O.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             #print(get_task_string)

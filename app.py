@@ -54,7 +54,7 @@ def index():
     
 
 
-    reply,index,instanceID = query_get_task_with_details(data['conversation']['memory'],present_skill)
+    reply,index,instanceID,created_by,SupplierName,PurchaseOrderNetAmount = query_get_task_with_details(data['conversation']['memory'],present_skill)
     return jsonify(
         status=200,
         replies=[{
@@ -65,7 +65,11 @@ def index():
         }],
         conversation={ 
     'memory': {'index':index,
-    'instanceID':instanceID} 
+    'instanceID':instanceID,
+    'created_by':created_by_user,
+    'SupplierName':SupplierName,
+    'PurchaseOrderNetAmount':PurchaseOrderNetAmount
+    } 
     } 
     )
 
@@ -124,11 +128,11 @@ def query_get_task_with_details(bot_memo,present_skill):
             final_reply_string = 'you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             
 
-            return final_reply_string,1,instance_id  #return 1for memory index as no memo is present in the beggining
+            return final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)#return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,1,instance_id
+            return final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
@@ -184,17 +188,17 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1,instance_id
+            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"])
+            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
    
         else:
             
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
     
     elif((bot_memo['index']) and present_skill == 'repeat'):
 
@@ -248,15 +252,15 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'],instance_id
+            return final_reply_string,bot_memo['index'],instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
         elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
    
         else:
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"])
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     elif((bot_memo['index']) and present_skill == 'approve'):
         after_approval_reply = 'successfully approved, say next to get your next task to approve....'
@@ -283,7 +287,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id  #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'],present_task_instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)  #after this call the "next" task showing skill in bot
 
 
     

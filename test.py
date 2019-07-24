@@ -5,13 +5,26 @@ import os
 
 from requests.auth import HTTPBasicAuth
 
-import grequests
+import aiohttp
+import asyncio
 
-urls = ["http://python-requests.org"]
+async def fetch(session, url):
+    async with session.get(url) as response:
+        #data = await response.read()
+        
+        return await response.json(content_type=text/plane)
+async def hey():
+    urls = ['https://www.google.com/']
+    tasks = []
+    async with aiohttp.ClientSession() as session:
+        for url in urls:
+            tasks.append(fetch(session,url))
 
-req = (grequests.get(u)for u in urls)
-responses = grequests.imap(req,size=1)
+        body = await asyncio.gather(*tasks)
 
-json_body = [response for response in responses]
-print(json_body)
+        print(body[0])
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(hey())
+
 

@@ -102,7 +102,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             #po item detail
             no_of_line_items = len(body3["d"]["results"])
             for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material"]
+                Material = body3["d"]["results"][i]["Material_Text"]
                 Plant = body3["d"]["results"][i]["Plant"]
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 
@@ -160,7 +160,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             #only show one or two tasks
             no_of_line_items = len(body3["d"]["results"])
             for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material"]
+                Material = body3["d"]["results"][i]["Material_Text"]
                 Plant = body3["d"]["results"][i]["Plant"]
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 
@@ -224,7 +224,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             #only show one or two tasks
             no_of_line_items = len(body3["d"]["results"])
             for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material"]
+                Material = body3["d"]["results"][i]["Material_Text"]
                 Plant = body3["d"]["results"][i]["Plant"]
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 

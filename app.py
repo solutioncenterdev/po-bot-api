@@ -68,7 +68,8 @@ def index():
     'instanceID':instanceID,
     'created_by':created_by_user,
     'SupplierName':SupplierName,
-    'PurchaseOrderNetAmount':PurchaseOrderNetAmount
+    'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
+    'present_reply':reply
     } 
     } 
     )

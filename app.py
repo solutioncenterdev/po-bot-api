@@ -275,7 +275,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
         if (response.status_code != 200):
-            return approval_failure_reply,bot_memo['index'],present_task_instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
+            return approval_failure_reply,bot_memo['index'],present_task_instance_id,'','', ''
         elif (response.status_code == 200):
             cookie = session.cookies.get_dict()
             print(cookie)

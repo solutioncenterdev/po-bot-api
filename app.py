@@ -136,7 +136,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
+            return final_reply_string,1,'','','', ''
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):

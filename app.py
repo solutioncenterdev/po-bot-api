@@ -136,7 +136,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         else:
             final_reply_string = 'no tasks to approve...'
-            return final_reply_string,'','','','', ''
+            return final_reply_string,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount']
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
@@ -197,74 +197,76 @@ def query_get_task_with_details(bot_memo,present_skill):
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
             final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),'','', ''
+            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount']
    
         else:
             
             final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
-    
-    elif((bot_memo['index']) and present_skill == 'repeat'):
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount']
 
-        r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-        body1 = r.json()
-        if (body1["d"]["results"] and bot_memo['index'] <= len(body1["d"]["results"])):
-            #task details
-            instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
-            task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]
+    #repeat intent is handled via bot memory not via code
+
+    # elif((bot_memo['index']) and present_skill == 'repeat'):
+
+    #     r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+    #     body1 = r.json()
+    #     if (body1["d"]["results"] and bot_memo['index'] <= len(body1["d"]["results"])):
+    #         #task details
+    #         instance_id = body1["d"]["results"][bot_memo['index']-1]["InstanceID"] 
+    #         task_title = body1["d"]["results"][bot_memo['index']-1]["TaskTitle"]
             
-            scrapped_po_no = task_title.split("order ",1)[1]
+    #         scrapped_po_no = task_title.split("order ",1)[1]
             
-            body2,body3 = take_action_async(scrapped_po_no) 
+    #         body2,body3 = take_action_async(scrapped_po_no) 
             
 
-            #po_header detail
-            created_by_user = body2["d"]["CreatedByUser"]
-            SupplierName = body2["d"]["SupplierName"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
-            DocumentCurrency = body2["d"]["DocumentCurrency"]
-            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+    #         #po_header detail
+    #         created_by_user = body2["d"]["CreatedByUser"]
+    #         SupplierName = body2["d"]["SupplierName"]
+    #         PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+    #         DocumentCurrency = body2["d"]["DocumentCurrency"]
+    #         PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
 
-            final_reply_string = ''
-            concat_string_for_multiple_lineitems = ''
+    #         final_reply_string = ''
+    #         concat_string_for_multiple_lineitems = ''
 
-            #po item detail
-            #only show one or two tasks
-            no_of_line_items = len(body3["d"]["results"])
-            for i in range(no_of_line_items):
-                Material = body3["d"]["results"][i]["Material_Text"]
-                Plant = body3["d"]["results"][i]["Plant"]
-                OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+    #         #po item detail
+    #         #only show one or two tasks
+    #         no_of_line_items = len(body3["d"]["results"])
+    #         for i in range(no_of_line_items):
+    #             Material = body3["d"]["results"][i]["Material_Text"]
+    #             Plant = body3["d"]["results"][i]["Plant"]
+    #             OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 
-                concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
-                    + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
-                    + 'OrderQuantity: ' + OrderQuantity + '.\n'
+    #             concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+    #                 + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+    #                 + 'OrderQuantity: ' + OrderQuantity + '.\n'
                     
 
 
-            get_task_string = ''
-            get_task_string_with_header_detail = ''
+    #         get_task_string = ''
+    #         get_task_string_with_header_detail = ''
 
-            get_task_string = task_title + '\n'
+    #         get_task_string = task_title + '\n'
 
-            get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
-                +'.' +'\n' + 'SupplierName: ' + SupplierName \
-                 +'.'   + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.' +'\n'
+    #         get_task_string_with_header_detail = 'created_by_user: ' + created_by_user \
+    #             +'.' +'\n' + 'SupplierName: ' + SupplierName \
+    #              +'.'   + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.' +'\n'
 
-            final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
-            #print(get_task_string)
+    #         final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+    #         #print(get_task_string)
 
 
-            #print(final_reply_string)
-            return final_reply_string,bot_memo['index'],instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
+    #         #print(final_reply_string)
+    #         return final_reply_string,bot_memo['index'],instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
-        elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
-            final_reply_string = 'no more tasks to approve...'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
+    #     elif(body1["d"]["results"] and bot_memo['index'] >= len(body1["d"]["results"])):
+    #         final_reply_string = 'no more tasks to approve...'
+    #         return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
    
-        else:
-            final_reply_string = 'I am facing some issues now please try later'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
+    #     else:
+    #         final_reply_string = 'I am facing some issues now please try later'
+    #         return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     elif((bot_memo['index']) and present_skill == 'approve'):
         after_approval_reply = 'successfully approved, say next to get your next task to approve....'
@@ -275,7 +277,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
         if (response.status_code != 200):
-            return approval_failure_reply + "say get my task to get your first pending approval or say next to get your next pending approval.",bot_memo['index'],present_task_instance_id,'','', ''
+            return approval_failure_reply + "say get my task to start over from your first pending approval or say next to get your next pending approval.",bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount']
         elif (response.status_code == 200):
             cookie = session.cookies.get_dict()
             print(cookie)
@@ -291,7 +293,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply + "say get my task to get your first pending approval or say next to get your next pending approval.",bot_memo['index'],present_task_instance_id,'','', ''  #after this call the "next" task showing skill in bot
+            return after_approval_reply + "say get my task to start from your first pending approval or say next to get your next pending approval.",bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount']  #after this call the "next" task showing skill in bot
 
 
     

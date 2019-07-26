@@ -270,7 +270,7 @@ def query_get_task_with_details(bot_memo,present_skill):
     #         return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     elif((bot_memo['index']) and present_skill == 'approve'):
-        after_approval_reply = 'successfully approved'
+        after_approval_reply = 'successfully approved, please "get my tasks", to get your pending aapprovals from the beggining, or, say next to move on to your next task.'
         approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
         session = requests.Session()
         header = {'x-csrf-token':'Fetch'}
@@ -278,7 +278,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
         if (response.status_code != 200):
-            return '' ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply
+            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply
         elif (response.status_code == 200):
             cookie = session.cookies.get_dict()
             print(cookie)
@@ -294,7 +294,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return '',bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply  #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply  #after this call the "next" task showing skill in bot
 
 
     

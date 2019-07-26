@@ -70,7 +70,7 @@ def index():
     'SupplierName':SupplierName,
     'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
     'after_approval_reply':after_approval_reply,
-    'present_reply':after_approval_reply + reply
+    'present_reply': reply
     } 
     } 
     )

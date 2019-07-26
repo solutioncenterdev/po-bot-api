@@ -143,8 +143,58 @@ def query_get_task_with_details(bot_memo,present_skill):
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
+        if ((len(body1["d"]["results"])==1):
+
+            instance_id = body1["d"]["results"][0]["InstanceID"] 
+            task_title = body1["d"]["results"][0]["TaskTitle"]
+            
+            scrapped_po_no = task_title.split("order ",1)[1]
+            
+            body2,body3 = take_action_async(scrapped_po_no)
+            
+            #po_header detail
+            created_by_user = body2["d"]["CreatedByUser"]
+            SupplierName = body2["d"]["SupplierName"]
+            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+            DocumentCurrency = body2["d"]["DocumentCurrency"]
+            PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+
+            final_reply_string = ''
+            concat_string_for_multiple_lineitems = ''
+
+            #po item detail
+            no_of_line_items = len(body3["d"]["results"])
+            for i in range(no_of_line_items):
+                Material = body3["d"]["results"][i]["Material_Text"]
+                Plant = body3["d"]["results"][i]["Plant"]
+                OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+                netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
+                documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
+                item_dict = {'Material':Material}
+                
+                concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+                    + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+                    + 'OrderQuantity: ' + OrderQuantity + '.\n'
+                    
+
+
+            get_task_string = ''
+            get_task_string_with_header_detail = ''
+
+            get_task_string = task_title + '.' + '\n'
+
+            get_task_string_with_header_detail = 'created by user: ' + created_by_user \
+                + '.' + '\n' + 'SupplierName: ' + SupplierName \
+                    + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
+
+            final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+            
+
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'' #return 1for memory index as no memo is present in the beggining
+
+
        
-        if ((len(body1["d"]["results"])>0) and bot_memo['index'] < len(body1["d"]["results"])):
+        elif ((len(body1["d"]["results"])>0) and bot_memo['index'] < len(body1["d"]["results"])):
             #task details
             instance_id = body1["d"]["results"][bot_memo['index']]["InstanceID"] 
             task_title = task_title = body1["d"]["results"][bot_memo['index']]["TaskTitle"]

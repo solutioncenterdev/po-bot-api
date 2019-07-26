@@ -136,7 +136,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'' #return 1for memory index as no memo is present in the beggining
 
         else:
-            final_reply_string = 'no tasks to approve...'
+            final_reply_string = 'no more tasks to approve in ypor inbox.'
             return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,''
 
     
@@ -197,12 +197,12 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
-            final_reply_string = 'no more tasks to approve...'
+            final_reply_string = 'no more tasks to approve in your inbox.'
             return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],''
    
         else:
             
-            final_reply_string = 'I am facing some issues now please try later'
+            final_reply_string = 'I am facing some issues now please try later.'
             return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],''
 
     #repeat intent is handled via bot memory not via code

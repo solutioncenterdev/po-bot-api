@@ -294,7 +294,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply  #after this call the "next" task showing skill in bot
+            return '',bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply  #after this call the "next" task showing skill in bot
 
 
     

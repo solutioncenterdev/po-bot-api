@@ -54,7 +54,7 @@ def index():
     
 
 
-    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply = query_get_task_with_details(data['conversation']['memory'],present_skill)
+    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details = query_get_task_with_details(data['conversation']['memory'],present_skill)
     return jsonify(
         status=200,
         replies=[{
@@ -69,6 +69,7 @@ def index():
     'created_by':created_by_user,
     'SupplierName':SupplierName,
     'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
+    'all_item_details':all_item_details,
     'after_approval_reply':after_approval_reply,
     'present_reply': reply
     } 
@@ -104,7 +105,8 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             final_reply_string = ''
             concat_string_for_multiple_lineitems = ''
-
+            per_item_desc_dict = {}
+            all_item_details = {}
             #po item detail
             no_of_line_items = len(body3["d"]["results"])
             for i in range(no_of_line_items):
@@ -113,7 +115,13 @@ def query_get_task_with_details(bot_memo,present_skill):
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
                 documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
-                item_dict = {'Material':Material}
+                price_present_item_with_currency = netPriceItem + documentCurrency
+
+                item_no = 'item : ' + str(i)
+                # print(item_no)
+                #item_no = dict(item_no)
+                per_item_desc_dict = {item_no:{'Material':'a','Plant':'b','OrderQuantity':'c','netPriceItem':price_present_item_with_currency}}
+                all_item_details.update(per_item_desc_dict)
                 
                 concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
                     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
@@ -133,11 +141,11 @@ def query_get_task_with_details(bot_memo,present_skill):
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'' #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,''
+            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'',''
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
@@ -171,7 +179,13 @@ def query_get_task_with_details(bot_memo,present_skill):
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
                 netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
                 documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
-                item_dict = {'Material':Material}
+                price_present_item_with_currency = netPriceItem + documentCurrency
+
+                item_no = 'item : ' + str(i)
+                # print(item_no)
+                #item_no = dict(item_no)
+                per_item_desc_dict = {item_no:{'Material':'a','Plant':'b','OrderQuantity':'c','netPriceItem':price_present_item_with_currency}}
+                all_item_details.update(per_item_desc_dict)
                 
                 concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
                     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
@@ -191,7 +205,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'' #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details #return 1for memory index as no memo is present in the beggining
 
 
        
@@ -223,6 +237,15 @@ def query_get_task_with_details(bot_memo,present_skill):
                 Material = body3["d"]["results"][i]["Material_Text"]
                 Plant = body3["d"]["results"][i]["Plant"]
                 OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+                netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
+                documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
+                price_present_item_with_currency = netPriceItem + documentCurrency
+
+                item_no = 'item : ' + str(i)
+                # print(item_no)
+                #item_no = dict(item_no)
+                per_item_desc_dict = {item_no:{'Material':'a','Plant':'b','OrderQuantity':'c','netPriceItem':price_present_item_with_currency}}
+                all_item_details.update(per_item_desc_dict)
                 
                 concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
                     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
@@ -244,17 +267,17 @@ def query_get_task_with_details(bot_memo,present_skill):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),''
+            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],''
+            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'',''
    
         else:
             
             final_reply_string = 'I think there are no more pending approvals for you. Say, "get my tasks", to get your pending approvals.'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],''
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'',''
 
     #repeat intent is handled via bot memory not via code
 
@@ -329,7 +352,7 @@ def query_get_task_with_details(bot_memo,present_skill):
 
         response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
         if (response.status_code != 200):
-            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply
+            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,''
         elif (response.status_code == 200):
             cookie = session.cookies.get_dict()
             print(cookie)
@@ -345,7 +368,7 @@ def query_get_task_with_details(bot_memo,present_skill):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply  #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,''  #after this call the "next" task showing skill in bot
 
 
     

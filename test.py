@@ -26,7 +26,7 @@ async def hey():
 
         print(body[0]['d']['results'][0]["TaskTitle"])
         print('**************************************************')
-        print(body[1])
+        print(body[1]['d']['PurchasingOrganizationName'])
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(hey())

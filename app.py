@@ -140,7 +140,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                     + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
             #final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
-            final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+            final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
 
             return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details #return 1for memory index as no memo is present in the beggining
@@ -185,7 +185,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                 documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
                 price_present_item_with_currency = netPriceItem + documentCurrency
 
-                item_no = 'item : ' + str(i)
+                item_no = 'item : ' + str(i + 1)
                 # print(item_no)
                 #item_no = dict(item_no)
                 per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}

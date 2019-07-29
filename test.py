@@ -8,21 +8,25 @@ from requests.auth import HTTPBasicAuth
 import aiohttp
 import asyncio
 
+scrapped_po = '4500000431'
+
 async def fetch(session, url):
     async with session.get(url) as response:
         #data = await response.read()
         
-        return await response.json(content_type=text/plane)
+        return await response.json()
 async def hey():
-    urls = ['https://www.google.com/']
+    urls = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"]
     tasks = []
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(auth=aiohttp.BasicAuth('pritamsa','rupu@0801')) as session:
         for url in urls:
             tasks.append(fetch(session,url))
 
         body = await asyncio.gather(*tasks)
 
-        print(body[0])
+        print(body[0]['d']['results'][0]["TaskTitle"])
+        print('**************************************************')
+        print(body[1])
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(hey())

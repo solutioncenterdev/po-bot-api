@@ -120,7 +120,7 @@ def query_get_task_with_details(bot_memo,present_skill):
                 item_no = 'item : ' + str(i + 1)
                 # print(item_no)
                 #item_no = dict(item_no)
-                per_item_desc_dict = {i:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
+                per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
                 all_item_details.update(per_item_desc_dict)
                 
                 #use this when sending the item details as string all in one reply

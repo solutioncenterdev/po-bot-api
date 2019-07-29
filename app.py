@@ -69,7 +69,7 @@ def index():
     'created_by':created_by_user,
     'SupplierName':SupplierName,
     'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
-    'all_item_details':str(all_item_details),
+    'all_item_details':all_item_details,
     'after_approval_reply':after_approval_reply,
     'present_reply': reply
     } 

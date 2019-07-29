@@ -172,6 +172,8 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             final_reply_string = ''
             concat_string_for_multiple_lineitems = ''
+            per_item_desc_dict = {}
+            all_item_details = {}
 
             #po item detail
             no_of_line_items = len(body3["d"]["results"])
@@ -231,6 +233,8 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             final_reply_string = ''
             concat_string_for_multiple_lineitems = ''
+            per_item_desc_dict = {}
+            all_item_details = {}
 
             #po item detail
             #only show one or two tasks

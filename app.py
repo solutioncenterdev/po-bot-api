@@ -384,7 +384,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,''  #after this call the "next" task showing skill in bot
 
     elif((bot_nlp['ordinal']) and present_skill == 'get_item_details'):
-        filter_item_ordinally = 'item : '+ str(bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
+        filter_item_ordinally = 'item : '+ (bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
         print(filter_item_ordinally)
         print(type(filter_item_ordinally))
         item_level_reply_ordibnally = bot_memo['all_item_details'][filter_item_ordinally]

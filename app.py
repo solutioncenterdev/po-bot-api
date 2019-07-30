@@ -387,7 +387,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         # filter_item_ordinally = 'item : '+ (bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
         # print(filter_item_ordinally)
         print('///////////////////////////////////////////////////')
-        print(bot_nlp['ordinal'][bot_memo['index']]['index'])
+        print(bot_nlp['ordinal'][bot_memo['index']-1]['index'])
         print(type(bot_nlp['ordinal'][bot_memo['index']]['index']))
         # item_level_reply_ordibnally = bot_memo['all_item_details'][filter_item_ordinally]
         # print('///////////////////////////////////////////////////')

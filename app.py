@@ -123,7 +123,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 item_no = 'item : ' + str(i + 1)
                 # print(item_no)
                 #item_no = dict(item_no)
-                per_item_desc_dict = {i + 1:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
+                per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
                 all_item_details.update(per_item_desc_dict)
                 
                 #use this when sending the item details as string all in one reply
@@ -384,7 +384,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,''  #after this call the "next" task showing skill in bot
 
     elif((bot_nlp['ordinal']) and present_skill == 'get_item_details'):
-        item_level_reply_ordibnally = bot_memo['all_item_details'][str(bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])]
+        item_level_reply_ordibnally = bot_memo['all_item_details']['item : '+ str(bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])]
         print('///////////////////////////////////////////////////')
         print(item_level_reply_ordibnally)
         

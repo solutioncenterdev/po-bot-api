@@ -385,7 +385,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
     elif((bot_nlp['ordinal']) and present_skill == 'get_item_details'):
         # 'item : '+ str(bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
-        item_level_reply_ordibnally = bot_memo['all_item_details']['item 1']
+        item_level_reply_ordibnally = bot_memo['all_item_details']['item : 1']
         print('///////////////////////////////////////////////////')
         print(item_level_reply_ordibnally)
         

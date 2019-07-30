@@ -56,7 +56,7 @@ def index():
     
 
 
-    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details = query_get_task_with_details(data['conversation']['memory'],present_skill)
+    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details = query_get_task_with_details(data['conversation']['memory'],present_skill,bot_nlp)
     return jsonify(
         status=200,
         replies=[{
@@ -72,6 +72,7 @@ def index():
     'SupplierName':SupplierName,
     'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
     'all_item_details':all_item_details,
+    'item_details_ordinally':''
     'after_approval_reply':after_approval_reply,
     'present_reply': reply
     } 
@@ -83,7 +84,7 @@ def index():
 
    
    
-def query_get_task_with_details(bot_memo,present_skill):
+def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
@@ -382,8 +383,11 @@ def query_get_task_with_details(bot_memo,present_skill):
 
             return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,''  #after this call the "next" task showing skill in bot
 
-
-    
+    elif((bot_nlp['ordinal']) and present_skill == 'get_item_details'):
+        item_level_reply_ordibnally = bot_memo['all_item_details'][bot_nlp['ordinal']['rank']]
+        print('///////////////////////////////////////////////////')
+        print(item_level_reply_ordibnally)
+        
 
 @app.route('/errors', methods=['POST'])
 def errors():

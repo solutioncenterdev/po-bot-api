@@ -44,7 +44,9 @@ def take_action_async(scrapped_po_no):
 def index():
     data = json.loads(request.get_data())  # gets the data from chatbot that is json body of bot memory
     
-
+    bot_nlp = data['nlp']['entities']
+    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(bot_nlp)
     bot_conversation = data['conversation']
     bot_memo = data['conversation']['memory']
     

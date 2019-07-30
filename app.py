@@ -72,7 +72,7 @@ def index():
     'SupplierName':SupplierName,
     'PurchaseOrderNetAmount':PurchaseOrderNetAmount,
     'all_item_details':all_item_details,
-    'item_details_ordinally':''
+    # 'item_details_ordinally':''
     'after_approval_reply':after_approval_reply,
     'present_reply': reply
     } 

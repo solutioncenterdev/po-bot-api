@@ -393,7 +393,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         item_level_reply_ordinally = bot_memo['all_item_details'][individual_item_filter_string]
         print(item_level_reply_ordinally)
         
-        return  item_level_reply_ordinally,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
+        return  str(item_level_reply_ordinally),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
 
 @app.route('/errors', methods=['POST'])
 def errors():

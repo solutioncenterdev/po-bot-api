@@ -393,7 +393,19 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         item_level_reply_ordinally = bot_memo['all_item_details'][individual_item_filter_string]
         print(item_level_reply_ordinally)
         
-        return  str(item_level_reply_ordinally),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
+        return  item_level_reply_ordinally,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
+
+
+    elif((bot_nlp['number'] and len(bot_nlp['number']) <= bot_memo['no_of_line_items']) and present_skill == 'get_item_details'):
+        # filter_item_ordinally = 'item : '+ (bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
+        # print(filter_item_ordinally)
+        print('///////////////////////////////////////////////////')
+        nlp_number_filter_index = bot_nlp['number'][0]['index']  #this is the first element's index of nlp entity ordinal array
+        individual_item_filter_string = 'item : ' + str(nlp_number_filter_index + 1)
+        item_level_reply_numerically = bot_memo['all_item_details'][individual_item_filter_string]
+        print(item_level_reply_numerically)
+        
+        return  item_level_reply_numerically,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
 
 @app.route('/errors', methods=['POST'])
 def errors():

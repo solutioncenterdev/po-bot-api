@@ -401,7 +401,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         # print(filter_item_ordinally)
         print('///////////////////////////////////////////////////')
         nlp_number_filter_index = bot_nlp['number'][0]['index']  #this is the first element's index of nlp entity ordinal array
-        individual_item_filter_string = 'item : ' + str(nlp_number_filter_index + 1)
+        individual_item_filter_string = 'item : ' + str(nlp_number_filter_index)
         item_level_reply_numerically = bot_memo['all_item_details'][individual_item_filter_string]
         print(item_level_reply_numerically)
         

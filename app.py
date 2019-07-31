@@ -398,7 +398,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             return  str(item_level_reply_ordinally),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
 
 
-        elif(bot_nlp['number'] and len(bot_nlp['number']) <= bot_memo['no_of_line_items']):
+        elif(bot_nlp['ordinal']==False and bot_nlp['number'] and len(bot_nlp['number']) <= bot_memo['no_of_line_items']):
             # filter_item_ordinally = 'item : '+ (bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
             # print(filter_item_ordinally)
             print('///////////////////////////////////////////////////')

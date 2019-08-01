@@ -1,7 +1,4 @@
 from flask import Flask, request, jsonify
-
-import aiohttp
-import asyncio
 import grequests
 import json
 import os
@@ -16,37 +13,6 @@ import requests
 app = Flask(__name__)
 #port = 5000
 port = int(os.environ.get("PORT", 5000))
-
-
-
-async def fetch(session, url):
-    async with session.get(url) as response:
-        #data = await response.read()
-        
-        return await response.json()
-async def hey(scrapped_po_no):
-
-    url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"
-    url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
-    urls = [url1,url2]
-
-    # urls = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"]
-    tasks = []
-    async with aiohttp.ClientSession(auth=aiohttp.BasicAuth('pritamsa','rupu@0801')) as session:
-        for url in urls:
-            tasks.append(fetch(session,url))
-
-        body = await asyncio.gather(*tasks)
-
-        return body[0], body[1]
-
-        # print(body[0]['d']['results'][0]["TaskTitle"])
-        # print('**************************************************')
-        # print(body[1]['d']['PurchasingOrganizationName'])
-
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(hey(scrapped_po_no))
-
 
 
 def take_action_async(scrapped_po_no):
@@ -122,8 +88,6 @@ def index():
 def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
-        
-        
         r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         body1 = r.json()
         no_of_tasks = len(body1["d"]["results"])
@@ -134,10 +98,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             
             scrapped_po_no = task_title.split("order ",1)[1]
             
-            body2,body3 = hey(scrapped_po_no)
-
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(hey(scrapped_po_no))
+            body2,body3 = take_action_async(scrapped_po_no)
             
             #po_header detail
             created_by_user = body2["d"]["CreatedByUser"]

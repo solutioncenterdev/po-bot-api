@@ -134,10 +134,10 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     for url in urls:
                         tasks.append(fetch(session,url))
 
-                        body = await asyncio.gather(*tasks)
+                    body = await asyncio.gather(*tasks)
 
-                        body2 = body[0]
-                        body3 = body[1]
+                    body2 = body[0]
+                    body3 = body[1]
                 
         
         

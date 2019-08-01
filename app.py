@@ -12,22 +12,26 @@ from requests.auth import HTTPBasicAuth
 import requests
 
 
-#sys.setrecursionlimit(20000)
-app = Flask(__name__)
-#port = 5000
-port = int(os.environ.get("PORT", 5000))
-
-
-
 async def fetch(session, url):
     async with session.get(url) as response:
         #data = await response.read()
         
         return await response.json()
-async def hey(scrapped_po_no):
+async def hey():
 
-    url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"
-    url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
+
+    r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+    body1 = r.json()
+    no_of_tasks = len(body1["d"]["results"])
+    if (body1["d"]["results"]):
+        #task details
+        instance_id = body1["d"]["results"][0]["InstanceID"] 
+        task_title = body1["d"]["results"][0]["TaskTitle"]
+        
+        scrapped_po_no = task_title.split("order ",1)[1]
+
+    url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
+    url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
     urls = [url1,url2]
 
     # urls = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"]
@@ -39,6 +43,19 @@ async def hey(scrapped_po_no):
         body = await asyncio.gather(*tasks)
 
         return body[0], body[1]
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(hey())
+
+
+#sys.setrecursionlimit(20000)
+app = Flask(__name__)
+#port = 5000
+port = int(os.environ.get("PORT", 5000))
+
+
+
+
 
         # print(body[0]['d']['results'][0]["TaskTitle"])
         # print('**************************************************')
@@ -124,20 +141,12 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
         
         
-        r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
-        body1 = r.json()
-        no_of_tasks = len(body1["d"]["results"])
-        if (body1["d"]["results"]):
-            #task details
-            instance_id = body1["d"]["results"][0]["InstanceID"] 
-            task_title = body1["d"]["results"][0]["TaskTitle"]
+        
             
-            scrapped_po_no = task_title.split("order ",1)[1]
-            
-            body2,body3 = hey(scrapped_po_no)
+            body2,body3 = hey()
 
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(hey(scrapped_po_no))
+            # loop = asyncio.get_event_loop()
+            # loop.run_until_complete(hey(scrapped_po_no))
             
             #po_header detail
             created_by_user = body2["d"]["CreatedByUser"]

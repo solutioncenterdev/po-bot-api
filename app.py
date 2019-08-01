@@ -384,6 +384,10 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','' #after this call the "next" task showing skill in bot
 
+    
+    # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN
+    #************************************************************************************************************
+    
     # elif((bot_nlp['ordinal'] and len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']) and present_skill == 'get_item_details'):
     elif (present_skill == 'get_item_details'):
         if (bot_nlp['ordinal'] and len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']):

@@ -144,8 +144,10 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             
             body2,body3,no_of_tasks,instance_id,task_title = hey()
 
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(hey())
+            # loop = asyncio.get_event_loop()
+            # loop.run_until_complete(hey())
+
+            asyncio.run(hey())
 
             # loop = asyncio.get_event_loop()
             # loop.run_until_complete(hey(scrapped_po_no))

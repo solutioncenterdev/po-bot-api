@@ -102,7 +102,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
 
-
+        scrapped_po_no = ''
         async def fetch(session, url):
             async with session.get(url) as response:
         #data = await response.read()
@@ -124,26 +124,29 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     #     final_reply_string = 'no more tasks to approve in your inbox.'
     #     return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','',''
 
-                url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
-                url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
-                urls = [url1,url2]
+            url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
+            url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
+            urls = [url1,url2]
 
-        # urls = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"]
-                tasks = []
-                async with aiohttp.ClientSession(auth=aiohttp.BasicAuth('pritamsa','rupu@0801')) as session:
-                    for url in urls:
-                        tasks.append(fetch(session,url))
+    # urls = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po +"'"")?sap-client=400&$format=json"]
+            tasks = []
+            async with aiohttp.ClientSession(auth=aiohttp.BasicAuth('pritamsa','rupu@0801')) as session:
+                for url in urls:
+                    tasks.append(fetch(session,url))
 
-                    body = await asyncio.gather(*tasks)
+                body = await asyncio.gather(*tasks)
 
-                    body2 = body[0]
-                    body3 = body[1]
-                
-        
+                body2 = body[0]
+                body3 = body[1]
+
+                return body2,body3,no_of_tasks,instance_id,task_title
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(hey())
         
         
             
-            # body2,body3,no_of_tasks,instance_id,task_title = test.hey()
+        body2,body3,no_of_tasks,instance_id,task_title = hey()
 
            
             
@@ -194,12 +197,12 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
 
-        return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
-# loop = asyncio.get_event_loop()
+            # return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
+    # loop = asyncio.get_event_loop()
 
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(hey())
+            
+
+        return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
 
         
         

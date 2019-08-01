@@ -140,13 +140,17 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 body3 = body[1]
 
                 return body2,body3,no_of_tasks,instance_id,task_title
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(hey())
+        # loop = asyncio.new_event_loop()
+        # asyncio.set_event_loop(loop)
+        # loop.run_until_complete(hey())
         
         
             
         body2,body3,no_of_tasks,instance_id,task_title = hey()
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(hey())
 
            
             

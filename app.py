@@ -148,53 +148,53 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
            
             
                 #po_header detail
-                created_by_user = body2["d"]["CreatedByUser"]
-                SupplierName = body2["d"]["SupplierName"]
-                PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
-                DocumentCurrency = body2["d"]["DocumentCurrency"]
-                PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+                    created_by_user = body2["d"]["CreatedByUser"]
+                    SupplierName = body2["d"]["SupplierName"]
+                    PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+                    DocumentCurrency = body2["d"]["DocumentCurrency"]
+                    PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
 
-                final_reply_string = ''
-                concat_string_for_multiple_lineitems = ''
-                per_item_desc_dict = {}
-                all_item_details = {}
-                #po item detail
-                no_of_line_items = len(body3["d"]["results"])
-                for i in range(no_of_line_items):
-                    Material = body3["d"]["results"][i]["Material_Text"]
-                    Plant = body3["d"]["results"][i]["Plant"]
-                    OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
-                    netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
-                    documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
-                    price_present_item_with_currency = netPriceItem + documentCurrency
+                    final_reply_string = ''
+                    concat_string_for_multiple_lineitems = ''
+                    per_item_desc_dict = {}
+                    all_item_details = {}
+                    #po item detail
+                    no_of_line_items = len(body3["d"]["results"])
+                    for i in range(no_of_line_items):
+                        Material = body3["d"]["results"][i]["Material_Text"]
+                        Plant = body3["d"]["results"][i]["Plant"]
+                        OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+                        netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
+                        documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
+                        price_present_item_with_currency = netPriceItem + documentCurrency
 
-                    item_no = 'item : ' + str(i + 1)
-                    # print(item_no)
-                    #item_no = dict(item_no)
-                    per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
-                    all_item_details.update(per_item_desc_dict)
-                    
-                    #use this when sending the item details as string all in one reply
-                    # concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
-                    #     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
-                    #     + 'OrderQuantity: ' + OrderQuantity + '.\n'
+                        item_no = 'item : ' + str(i + 1)
+                        # print(item_no)
+                        #item_no = dict(item_no)
+                        per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
+                        all_item_details.update(per_item_desc_dict)
                         
+                        #use this when sending the item details as string all in one reply
+                        # concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+                        #     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+                        #     + 'OrderQuantity: ' + OrderQuantity + '.\n'
+                            
 
 
-                get_task_string = ''
-                get_task_string_with_header_detail = ''
+                    get_task_string = ''
+                    get_task_string_with_header_detail = ''
 
-                get_task_string = task_title + '.' + '\n'
+                    get_task_string = task_title + '.' + '\n'
 
-                get_task_string_with_header_detail = 'created by user: ' + created_by_user \
-                    + '.' + '\n' + 'SupplierName: ' + SupplierName \
-                        + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
+                    get_task_string_with_header_detail = 'created by user: ' + created_by_user \
+                        + '.' + '\n' + 'SupplierName: ' + SupplierName \
+                            + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
-                #final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
-                final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+                    #final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+                    final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
 
-                return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
+                    return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
         # loop = asyncio.get_event_loop()
 
         loop = asyncio.new_event_loop()

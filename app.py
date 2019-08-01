@@ -12,13 +12,6 @@ from requests.auth import HTTPBasicAuth
 import requests
 
 
-
-#sys.setrecursionlimit(20000)
-app = Flask(__name__)
-#port = 5000
-port = int(os.environ.get("PORT", 5000))
-
-
 async def fetch(session, url):
     async with session.get(url) as response:
         #data = await response.read()
@@ -55,9 +48,16 @@ async def hey():
         return body[0], body[1], no_of_tasks, instance_id, task_title
 
 
+loop = asyncio.get_event_loop()
+loop.run_until_complete(hey())
 
 
 
+
+#sys.setrecursionlimit(20000)
+app = Flask(__name__)
+#port = 5000
+port = int(os.environ.get("PORT", 5000))
 
 
 
@@ -147,7 +147,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             # loop = asyncio.get_event_loop()
             # loop.run_until_complete(hey())
 
-            asyncio.run(hey())
+           
 
             # loop = asyncio.get_event_loop()
             # loop.run_until_complete(hey(scrapped_po_no))

@@ -138,8 +138,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                         body2 = body[0]
                         body3 = body[1]
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(hey())
+                
         
         
         
@@ -196,7 +195,8 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
 
                 return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
-
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(hey())
         
 
     

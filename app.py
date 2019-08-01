@@ -52,7 +52,7 @@ async def hey():
 
         body = await asyncio.gather(*tasks)
 
-        return body[0], body[1]
+        return body[0], body[1], no_of_tasks, instance_id, task_title
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(hey())
@@ -143,7 +143,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         
         
             
-            body2,body3 = hey()
+            body2,body3,no_of_tasks,instance_id,task_title = hey()
 
             # loop = asyncio.get_event_loop()
             # loop.run_until_complete(hey(scrapped_po_no))

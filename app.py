@@ -12,13 +12,19 @@ from requests.auth import HTTPBasicAuth
 import requests
 
 
+
+#sys.setrecursionlimit(20000)
+app = Flask(__name__)
+#port = 5000
+port = int(os.environ.get("PORT", 5000))
+
+
 async def fetch(session, url):
     async with session.get(url) as response:
         #data = await response.read()
         
         return await response.json()
 async def hey():
-
 
     r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
     body1 = r.json()
@@ -29,6 +35,10 @@ async def hey():
         task_title = body1["d"]["results"][0]["TaskTitle"]
         
         scrapped_po_no = task_title.split("order ",1)[1]
+
+    # else:
+    #     final_reply_string = 'no more tasks to approve in your inbox.'
+    #     return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','',''
 
     url1 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/C_PURCHASEORDER_FS_SRV/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")?sap-client=400&$format=json"
     url2 = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/ALEXA_ALL/C_PURCHASEORDER_FS_SRV;o=sid(M17.400)/C_PurchaseOrderFs(PurchaseOrder="+ "'"+scrapped_po_no +"'"")/to_PurchaseOrderItem?sap-client=400&$format=json"
@@ -48,22 +58,12 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(hey())
 
 
-#sys.setrecursionlimit(20000)
-app = Flask(__name__)
-#port = 5000
-port = int(os.environ.get("PORT", 5000))
 
 
 
 
 
-        # print(body[0]['d']['results'][0]["TaskTitle"])
-        # print('**************************************************')
-        # print(body[1]['d']['PurchasingOrganizationName'])
-
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(hey(scrapped_po_no))
-
+        
 
 
 def take_action_async(scrapped_po_no):
@@ -197,9 +197,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
 
-        else:
-            final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','',''
+        
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):

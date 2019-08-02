@@ -420,7 +420,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     
     # elif((bot_nlp['ordinal'] and len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']) and present_skill == 'get_item_details'):
     elif (present_skill == 'get_item_details'):
-        if (bot_nlp['ordinal'] and len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']):
+        if ((bot_nlp['ordinal'] or bot_nlp['number']) and (len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']) or (len(bot_nlp['number'] ) <= bot_memo['no_of_line_items'])):
             # filter_item_ordinally = 'item : '+ (bot_nlp['ordinal'][bot_nlp['ordinal']['index']]['rank'])
             # print(filter_item_ordinally)
             print('///////////////////////////////////////////////////')

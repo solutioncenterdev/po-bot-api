@@ -56,7 +56,7 @@ def index():
     
 
 
-    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items = query_get_task_with_details(data['conversation']['memory'],present_skill,bot_nlp)
+    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no = query_get_task_with_details(data['conversation']['memory'],present_skill,bot_nlp)
     return jsonify(
         status=200,
         replies=[{
@@ -75,7 +75,8 @@ def index():
     'all_item_details':all_item_details,
     # 'item_details_ordinally':''
     'after_approval_reply':after_approval_reply,
-    'present_reply': reply
+    'present_reply': reply,
+    'scrapped_po_no':scrapped_po_no
     } 
     } 
     )
@@ -163,11 +164,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','',''
+            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
@@ -244,7 +245,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             # final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no #return 1for memory index as no memo is present in the beggining
 
 
        
@@ -311,17 +312,17 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items
+            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','',''
+            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no']
    
         else:
             
             final_reply_string = 'I think there are no more pending approvals for you. Say, "get my tasks", to get your pending approvals.'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','',''
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no']
 
     #repeat intent is handled via bot memory not via code
 
@@ -396,7 +397,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
         response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
         if (response.status_code != 200):
-            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'',''
+            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
         elif (response.status_code == 200):
             cookie = session.cookies.get_dict()
             print(cookie)
@@ -412,7 +413,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             print('***************************************************************')
             print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','' #after this call the "next" task showing skill in bot
+            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot
 
     
     # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN
@@ -429,7 +430,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             item_level_reply_ordinally = bot_memo['all_item_details'][individual_item_filter_string]
             print(item_level_reply_ordinally)
 
-            return  str(item_level_reply_ordinally),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
+            return  str(item_level_reply_ordinally),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no']
 
 
         elif(bot_nlp['ordinal']==False and bot_nlp['number'] and len(bot_nlp['number']) <= bot_memo['no_of_line_items']):
@@ -441,7 +442,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             item_level_reply_numerically = bot_memo['all_item_details'][individual_item_filter_string]
             print(item_level_reply_numerically)
             
-            return  str(item_level_reply_numerically),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items']
+            return  str(item_level_reply_numerically),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no']
 
 @app.route('/errors', methods=['POST'])
 def errors():

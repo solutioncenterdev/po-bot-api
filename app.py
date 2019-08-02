@@ -97,7 +97,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         rs1 = (grequests.get(u,auth=('pritamsa','rupu@0801')))
         #both imap and map can be used
         #reque = grequests.imap(rs,size=1)
-        reque1 = grequests.imap(rs1,size=1)
+        reque1 = grequests.map(rs1,size=1)
         response_array1 = []
         for response1 in reque1:
             print(response1)

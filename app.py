@@ -88,6 +88,8 @@ def index():
 def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
+
+        #requests can be used for synchronous requests
         # r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
         # body1 = r.json()
 
@@ -95,7 +97,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         rs1 = (grequests.get(u,auth=('pritamsa','rupu@0801')))
         #both imap and map can be used
         #reque = grequests.imap(rs,size=1)
-        reque1 = grequests.map(rs1,size=10)
+        reque1 = grequests.imap(rs1,size=1)
         response_array1 = []
         for response1 in reque1:
             print(response1)

@@ -442,8 +442,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 for response_post in post_reque:
 
                     if (response_post.status_code != 200):
-                        return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
                         print("hey problem in approving the request. Please try again later.")
+                        return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+                        
                     else:
 
                         return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot

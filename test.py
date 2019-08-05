@@ -59,10 +59,10 @@
 # # loop = asyncio.get_event_loop()
 # # loop.run_until_complete(hey())
 
-
-per_item_desc_dict = {'item_no':{'Material':'Material'}}
-s = '\n' + per_item_desc_dict
-print(s)
+all = {}
+per_item_desc_dict = {'\nitem_no':{'Material':'Material'}}
+s = per_item_desc_dict
+print(all.update(s))
 
 
 

@@ -142,7 +142,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 # print(item_no)
                 #item_no = dict(item_no)
                 per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
-                all_item_details.update('\n'+str(per_item_desc_dict))
+                all_item_details.update(per_item_desc_dict)
                 
                 #use this when sending the item details as string all in one reply
                 # concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \

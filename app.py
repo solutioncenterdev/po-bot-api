@@ -138,7 +138,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
                 price_present_item_with_currency = netPriceItem + documentCurrency
 
-                item_no = 'item : ' + str(i + 1)
+                item_no = '\nitem : ' + str(i + 1)
                 # print(item_no)
                 #item_no = dict(item_no)
                 per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}

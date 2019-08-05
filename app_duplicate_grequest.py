@@ -395,25 +395,59 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
         header = {'x-csrf-token':'Fetch'}
         present_task_instance_id = bot_memo['instanceID']
 
-        response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
-        if (response.status_code != 200):
-            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
-        elif (response.status_code == 200):
-            cookie = session.cookies.get_dict()
-            print(cookie)
+        # response = session.head("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header)
+        # if (response.status_code != 200):
+        #     return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+        # elif (response.status_code == 200):
+        #     cookie = session.cookies.get_dict()
+        #     print(cookie)
 
-            csrf = response.headers['x-csrf-token']
-            #print(csrf)
+        #     csrf = response.headers['x-csrf-token']
+        #     #print(csrf)
 
-            #post
-            #approve
-            header_2 = {'x-csrf-token':csrf}
-            approve_po = session.post("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header_2,cookies=cookie)
+        #     #post
+        #     #approve
+        #     header_2 = {'x-csrf-token':csrf}
+        #     approve_po = session.post("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'",auth=HTTPBasicAuth('pritamsa', 'rupu@0801'),headers=header_2,cookies=cookie)
 
-            print('***************************************************************')
-            print(approve_po.status_code)
+        #     print('***************************************************************')
+        #     print(approve_po.status_code)
 
-            return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot
+        # approval request posted asynchronously
+        url3 = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json"]
+        head_res1 = (grequests.head(u,auth=('pritamsa','rupu@0801'),headers=header)for u in url3)
+        #both imap and map can be used
+        #reque = grequests.imap(rs,size=1)
+        reque3 = grequests.map(head_res1,size=1)
+        response_array3 = []
+        for response3 in reque3:
+
+            if (response3.status_code != 200):
+                print("hey problem")
+                return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+            else:
+                cookie = response3.cookies.get_dict()
+                print(cookie)
+
+                csrf = response3.headers['x-csrf-token']
+                print(csrf)
+
+                header_2 = {'x-csrf-token':csrf}
+
+                url_post = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'"]
+                post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_post)
+
+                post_reque = grequests.map(post_res,size=1)
+                response_array_post = []
+                for response_post in post_reque:
+
+                    if (response_post.status_code != 200):
+                        print("hey problem in approving the request. Please try again later.")
+                        return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+                        
+                    else:
+
+                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot
 
     
     # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN

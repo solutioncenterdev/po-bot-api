@@ -164,7 +164,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+  " say get item details to get all the item details in this purchase order. Or,say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
 
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',str(all_item_details).strip("{}"),no_of_line_items,scrapped_po_no #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'

@@ -60,9 +60,9 @@
 # # loop.run_until_complete(hey())
 
 all = {}
-per_item_desc_dict = {'\nitem_no':{'Material':'Material'}}
-s = per_item_desc_dict
-print(all.update(s))
+per_item_desc_dict = {'\nitem_no':{'\nMaterial':'Material'}}
+print(str(per_item_desc_dict) + '\n'+str(per_item_desc_dict))
+
 
 
 

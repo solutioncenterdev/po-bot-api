@@ -64,7 +64,7 @@ from requests.auth import HTTPBasicAuth
 # loop.run_until_complete(hey())
 
 header = {'x-csrf-token':'Fetch'}
-present_task_instance_id = '000000426165'
+present_task_instance_id = '000000431084'
 
 url3 = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json"]
 head_res1 = (grequests.head(u,auth=('pritamsa','rupu@0801'),headers=header)for u in url3)
@@ -85,7 +85,7 @@ for response3 in reque3:
 
         header_2 = {'x-csrf-token':csrf}
 
-        url_post = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'"]
+        url_post = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0002'&Comments='test%20reject'"]
         post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_post)
 
         post_reque = grequests.map(post_res,size=1)
@@ -93,9 +93,9 @@ for response3 in reque3:
         for response_post in post_reque:
 
             if (response_post.status_code != 200):
-                print("hey problem in approval request")
+                print("hey problem in rejection request")
             else:
-                print('approved')   
+                print('rejected')   
 
 # reque3 = grequests.map(head_res1,size=1)
 # response_array3 = []

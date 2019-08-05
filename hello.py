@@ -110,7 +110,9 @@
 
 s = str({"item : 1":{"Material":"fg221","OrderQuantity":"150","Plant":"1710","netPriceItem":"12.00USD"},"item : 2":{"Material":"AIR DRYERS","OrderQuantity":"100","Plant":"1710","netPriceItem":"10.00USD"},"item : 3":{"Material":"Concrete Pipe 16' Diameter","OrderQuantity":"100","Plant":"1710","netPriceItem":"8.00USD"}})
 
-print(s.strip('{}').strip('{}'))
+s2 = s.strip("{}")
+s3 = s2.strip("{}")
+print(s3)
 
 
 

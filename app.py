@@ -487,7 +487,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             if (response4.status_code != 200):
                 print("hey problem")
-                return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+                return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no']
             else:
                 cookie = response4.cookies.get_dict()
                 print(cookie)
@@ -506,11 +506,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                     if (response_post.status_code != 200):
                         print("hey problem in rejecting P.O. . Please try again later.")
-                        return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no']
+                        return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no']
                         
                     else:
 
-                        return after_rejection_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot
+                        return after_rejection_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_rejection_reply,'','',bot_memo['scrapped_po_no'] #after this call the "next" task showing skill in bot
 
     
     # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN

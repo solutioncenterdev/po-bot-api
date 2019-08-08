@@ -89,7 +89,7 @@ def index():
    
 def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
-    if ((bot_memo == {} or bot_memo['index'] == '') and present_skill == 'get_task_one_by_one'):
+    if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task_one_by_one'):
 
         #requests can be used for synchronous requests
         # r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
@@ -263,11 +263,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             final_reply_string = "you have," + str(no_of_tasks) + "." + "You can safely approve," + str(len(final_batch_instance_id_list)) + "approvals on the go. Say, yes, to approve all, and no to get your tasks one by one."
 
-            return  final_reply_string,'','','','', '','','','','',final_batch_instance_amount_dict
+            return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict
         
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,'','','','', '','','','','',final_batch_instance_amount_dict
+            return final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):

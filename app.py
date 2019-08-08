@@ -76,7 +76,7 @@ def index():
     # 'item_details_ordinally':''
     'after_approval_reply':after_approval_reply,
     'present_reply': reply,
-    'scrapped_po_no':scrapped_po_no
+    'scrapped_po_no':scrapped_po_no,
     'final_batch_instance_amount_dict':final_batch_instance_amount_dict
     } 
     } 

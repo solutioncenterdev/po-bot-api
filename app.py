@@ -670,7 +670,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     elif((bot_memo['final_batch_instance_amount_dict'] or bot_memo['final_batch_instance_id_list']) and present_skill == 'yes_approve_all'):
          
 
-        after_approval_reply = 'successfully approved all'
+        after_approval_reply = 'successfully approved all tasks in batch.'
         approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
        
         header = {'x-csrf-token':'Fetch'}
@@ -730,7 +730,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                 else:
                     print("approved suggested tasks in batch...")
-                    return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+                    return after_approval_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
 
 @app.route('/errors', methods=['POST'])

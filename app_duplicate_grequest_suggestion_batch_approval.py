@@ -56,7 +56,7 @@ def index():
     
 
 
-    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = query_get_task_with_details(data['conversation']['memory'],present_skill,bot_nlp)
+    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict = query_get_task_with_details(data['conversation']['memory'],present_skill,bot_nlp)
     return jsonify(
         status=200,
         replies=[{
@@ -77,7 +77,6 @@ def index():
     'after_approval_reply':after_approval_reply,
     'present_reply': reply,
     'scrapped_po_no':scrapped_po_no,
-    'final_batch_instance_id_list':final_batch_instance_id_list,
     'final_batch_instance_amount_dict':final_batch_instance_amount_dict
     } 
     } 
@@ -173,11 +172,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
 
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'' #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo,'',''
+            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo,''
 
     #gets all the available tasks in my inbox and suggests user after validation of conditions for batch approvals
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):
@@ -271,11 +270,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             final_reply_string = "you have," + str(no_of_tasks) + "pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + "of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
 
-            return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
+            return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict
         
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
+            return final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):
@@ -361,7 +360,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             # final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ suggestion_reply
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'' #return 1for memory index as no memo is present in the beggining
 
 
        
@@ -437,17 +436,17 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
 
             #print(final_reply_string)
-            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'',''
+            return final_reply_string,bot_memo['index'] + 1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,''
 
         elif(len(body1["d"]["results"]) > 0)and(bot_memo['index'] >= len(body1["d"]["results"])):
             
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no'],'',''
+            return final_reply_string,bot_memo['index'] ,len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no'],''
    
         else:
             
             final_reply_string = 'I think there are no more pending approvals for you. Say, "get my tasks", to get your pending approvals.'
-            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no'],'',''
+            return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],'','','',bot_memo['scrapped_po_no'],''
 
     #repeat intent is handled via bot memory not via code
 
@@ -549,7 +548,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             if (response3.status_code != 200):
                 print("hey problem")
-                return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],'',''
+                return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
             else:
                 cookie = response3.cookies.get_dict()
                 print(cookie)
@@ -572,7 +571,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                         
                     else:
 
-                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'' #after this call the "next" task showing skill in bot
 
     
     
@@ -612,7 +611,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             if (response4.status_code != 200):
                 print("hey problem")
-                return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no'],'',''
+                return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no'],''
             else:
                 cookie = response4.cookies.get_dict()
                 print(cookie)
@@ -631,11 +630,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                     if (response_post.status_code != 200):
                         print("hey problem in rejecting P.O. . Please try again later.")
-                        return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no'],'',''
+                        return rejection_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],rejection_failure_reply,'','',bot_memo['scrapped_po_no'],''
                         
                     else:
 
-                        return after_rejection_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_rejection_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        return after_rejection_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_rejection_reply,'','',bot_memo['scrapped_po_no'],'' #after this call the "next" task showing skill in bot
 
     
     # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN
@@ -652,7 +651,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             item_level_reply_ordinally = bot_memo['all_item_details'][individual_item_filter_string]
             print(item_level_reply_ordinally)
 
-            return  str(item_level_reply_ordinally).strip('{}'),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],'',''
+            return  str(item_level_reply_ordinally).strip('{}'),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],''
 
 
         elif(bot_nlp['ordinal']==False and bot_nlp['number'] and len(bot_nlp['number']) <= bot_memo['no_of_line_items']):
@@ -664,74 +663,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             item_level_reply_numerically = bot_memo['all_item_details'][individual_item_filter_string]
             print(item_level_reply_numerically)
             
-            return  str(item_level_reply_numerically),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],'',''
-
-
-    elif((bot_memo['final_batch_instance_amount_dict'] or bot_memo['final_batch_instance_id_list']) and present_skill == 'yes_approve_all'):
-         
-
-        after_approval_reply = 'successfully approved all'
-        approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
-       
-        header = {'x-csrf-token':'Fetch'}
-
-
-        url_maker_approve_array = []
-
-        for inst in final_batch_instance_id_list: 
-            url_maker_approve = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+inst +"'""&DecisionKey='0001'&Comments='test%20approved_in_batch'"
-            url_maker_approve_array.append(url_maker_approve)
-
-
-        all_csrf = []
-
-        url3 = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json"]
-        head_res1 = (grequests.head(u,auth=('pritamsa','rupu@0801'),headers=header)for u in url3)
-            
-        reque3 = grequests.map(head_res1,size=len(url_maker_approve_array))
-
-        print('********************')
-        # print(reque3)
-
-
-
-
-        if (reque3[0].status_code != 200):
-            print("hey problem")
-            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
-        else:
-            cookie = reque3[0].cookies.get_dict()
-                # print(cookie)
-
-            csrf = reque3[0].headers['x-csrf-token'] #get one csrf to pass as header in post request
-            # print(csrf)
-
-
-                #post
-
-
-            header_2 = {'x-csrf-token':csrf}
-
-
-                
-            # all_csrf.append(header_2)  #all csrf received at once which is of the length of suggested number of instances that can be approved
-        
-                
-                
-            post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_maker_approve_array)
-
-            post_reque = grequests.map(post_res,size=10)
-            response_array_post = []
-            for response_post in post_reque:
-
-                if (response_post.status_code != 200):
-                    print("hey problem in approving the request. Please try again later.")
-                    return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
-
-                else:
-                    print("approved suggested tasks in batch...")
-                    return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
-
+            return  str(item_level_reply_numerically),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],''
 
 @app.route('/errors', methods=['POST'])
 def errors():

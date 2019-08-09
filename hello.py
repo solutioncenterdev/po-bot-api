@@ -131,6 +131,147 @@ print(final_batch_instance_amount_dict)
 #approval code
 #batch approval code
 
+after_approval_reply = 'successfully approved, please say,"get my tasks", to get your previous pending aapprovals from the beggining, or, say next to move on to your next task.'
+approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
+# session = requests.Session()
+header = {'x-csrf-token':'Fetch'}
+
+
+url_maker_approve_array = []
+
+for inst in final_batch_instance_id_list: 
+    url_maker_approve = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+inst +"'""&DecisionKey='0001'&Comments='test%20approved_in_batch'"
+    url_maker_approve_array.append(url_maker_approve)
+
+
+all_csrf = []
+
+url3 = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json"]
+head_res1 = (grequests.head(u,auth=('pritamsa','rupu@0801'),headers=header)for u in url3)
+    
+reque3 = grequests.map(head_res1,size=len(url_maker_approve_array))
+
+print('********************')
+# print(reque3)
+
+
+
+
+if (reque3[0].status_code != 200):
+    print("hey problem")
+            # return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
+else:
+    cookie = reque3[0].cookies.get_dict()
+        # print(cookie)
+
+    csrf = reque3[0].headers['x-csrf-token'] #get one csrf to pass as header in post request
+    print(csrf)
+
+
+        #post
+
+
+    header_2 = {'x-csrf-token':csrf}
+
+
+        
+    all_csrf.append(header_2)  #all csrf received at once which is of the length of suggested number of instances that can be approved
+# print(all_csrf)
+
+            # print(header_2)
+        # url_maker_approve_array = []
+        # urls_post_batch_approve = batch_approve_url_array
+        
+        
+    post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_maker_approve_array)
+
+    post_reque = grequests.map(post_res,size=10)
+    response_array_post = []
+    for response_post in post_reque:
+
+        if (response_post.status_code != 200):
+            print("hey problem in approving the request. Please try again later.")
+            # return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
+
+        else:
+            print("approved suggested tasks in batch...")
+
+
+
+# post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=getcsrf(reque3),cookies=reque3.pop().cookies.get_dict())for u_post in url_maker_approve_array)
+
+# post_reque = grequests.map(post_res,size=10)
+# # response_array_post = []
+# for response_post in post_reque:
+
+#     if (response_post.status_code != 200):
+#         print("hey problem in approving the request. Please try again later.")
+#         # return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
+
+#     else:
+#         print("approved suggested tasks in batch...")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# response_array3 = []
+# for response3 in reque3:
+
+#     if (response3.status_code != 200):
+#         print("hey problem")
+#             # return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
+#     else:
+#         cookie = response3.cookies.get_dict()
+#         # print(cookie)
+
+#         csrf = response3.headers['x-csrf-token']
+#         print(csrf)
+
+
+#         #post
+
+
+#         header_2 = {'x-csrf-token':csrf}
+
+
+        
+#         all_csrf.append(header_2)  #all csrf received at once which is of the length of suggested number of instances that can be approved
+# # print(all_csrf)
+
+#             # print(header_2)
+#         url_maker_approve_array = []
+#         # urls_post_batch_approve = batch_approve_url_array
+        
+        
+#         post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_maker_approve_array)
+
+#         post_reque = grequests.map(post_res,size=10)
+#         response_array_post = []
+#         for response_post in post_reque:
+
+#             if (response_post.status_code != 200):
+#                 print("hey problem in approving the request. Please try again later.")
+#                 # return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
+
+#             else:
+#                 print("approved suggested tasks in batch...")
+
+#         return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'' #after this call the "next" task showing skill in bot
+
+
 
 
 

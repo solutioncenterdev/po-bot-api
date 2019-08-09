@@ -678,7 +678,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
         url_maker_approve_array = []
 
-        for inst in final_batch_instance_id_list: 
+        for inst in bot_memo['final_batch_instance_id_list']: 
             url_maker_approve = "https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+inst +"'""&DecisionKey='0001'&Comments='test%20approved_in_batch'"
             url_maker_approve_array.append(url_maker_approve)
 

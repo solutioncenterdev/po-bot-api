@@ -15,6 +15,97 @@ app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 
 
+def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
+
+    #requests can be used for synchronous requests
+    # r = requests.get("https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json", auth=HTTPBasicAuth('pritamsa', 'rupu@0801'))
+    # body1 = r.json()
+
+    #grequests is faster
+    url1 = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/TaskCollection?sap-client=400&$filter=Status%20eq%20%27READY%27&$format=json"]
+    rs1 = (grequests.get(u,auth=('pritamsa','rupu@0801'))for u in url1)
+    #both imap and map can be used
+    #reque = grequests.imap(rs,size=1)
+    reque1 = grequests.map(rs1,size=1)
+    response_array1 = []
+    for response1 in reque1:
+        print(response1)
+        x1 = response1.json()
+        response_array1.append(x1)
+    body1 = response_array1[0]
+
+    no_of_tasks = len(body1["d"]["results"])
+    if (body1["d"]["results"]):
+        #task details
+        instance_id = body1["d"]["results"][0]["InstanceID"] 
+        task_title = body1["d"]["results"][0]["TaskTitle"]
+        
+        scrapped_po_no = task_title.split("order ",1)[1]
+        
+        body2,body3 = take_action_async(scrapped_po_no)
+        
+        #po_header detail
+        created_by_user = body2["d"]["CreatedByUser"]
+        SupplierName = body2["d"]["SupplierName"]
+        PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+        DocumentCurrency = body2["d"]["DocumentCurrency"]
+        PurchaseOrderNetAmount = body2["d"]["PurchaseOrderNetAmount"]
+
+        suggestion_reply = ''
+
+        if (eval(PurchaseOrderNetAmount) <= 7000):
+            suggestion_reply = "I suggest you to approve or release this."
+        else:
+            suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
+
+        final_reply_string = ''
+        concat_string_for_multiple_lineitems = ''
+        per_item_desc_dict = {}
+        all_item_details = {}
+        #po item detail
+        no_of_line_items = len(body3["d"]["results"])
+        for i in range(no_of_line_items):
+            Material = body3["d"]["results"][i]["Material_Text"]
+            Plant = body3["d"]["results"][i]["Plant"]
+            OrderQuantity = body3["d"]["results"][i]["OrderQuantity"]
+            netPriceItem = body3["d"]["results"][i]["NetPriceAmount"]
+            documentCurrency = body3["d"]["results"][i]["DocumentCurrency"]
+            price_present_item_with_currency = netPriceItem + documentCurrency
+
+            item_no = 'item : ' + str(i + 1)
+            # print(item_no)
+            #item_no = dict(item_no)
+            per_item_desc_dict = {item_no:{'Material':Material,'Plant':Plant,'OrderQuantity':OrderQuantity,'netPriceItem':price_present_item_with_currency}}
+            all_item_details.update(per_item_desc_dict)
+            
+            #use this when sending the item details as string all in one reply
+            # concat_string_for_multiple_lineitems = concat_string_for_multiple_lineitems \
+            #     + 'Material: ' + Material + '.\n' + 'plant: ' + Plant + '.\n' \
+            #     + 'OrderQuantity: ' + OrderQuantity + '.\n'
+                
+
+
+        get_task_string = ''
+        get_task_string_with_header_detail = ''
+
+        get_task_string = task_title + '.' + '\n'
+
+        get_task_string_with_header_detail = 'created by user: ' + created_by_user \
+            + '.' + '\n' + 'SupplierName: ' + SupplierName \
+                + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
+
+        #final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
+        final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
+
+
+        return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+
+    else:
+        final_reply_string = 'no more tasks to approve in your inbox.'
+        return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo,'',''
+
+
+
 def take_action_async(scrapped_po_no):
     scrapped_po = scrapped_po_no
     print('*******************************************************')
@@ -266,13 +357,22 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     final_batch_amount_list.append(instance_id_corresponding_scrapped_net_amt_dict[key])
             final_batch_instance_amount_dict = dict(zip(final_batch_instance_id_list,final_batch_amount_list))
 
-            print('*********************************************')
-            print(final_batch_instance_amount_dict)
+            #if there are no tasks to safely approve
+            if (len(final_batch_instance_id_list <= 0)):
+                #call get tasks one by one function
 
-            final_reply_string = "you have," + str(no_of_tasks) + "pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + "of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
+                reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
 
-            return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
-        
+                return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+
+            else:
+                print('*********************************************')
+                print(final_batch_instance_amount_dict)
+
+                final_reply_string = "you have," + str(no_of_tasks) + "pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + "of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
+
+                return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
+            
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
             return final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list

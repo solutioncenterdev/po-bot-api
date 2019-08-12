@@ -799,7 +799,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
         if (reque3[0].status_code != 200):
             print("hey problem")
-            return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+            return approval_failure_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
         else:
             cookie = reque3[0].cookies.get_dict()
                 # print(cookie)
@@ -827,11 +827,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                 if (response_post.status_code != 200):
                     print("hey problem in approving the request. Please try again later.")
-                    return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+                    return approval_failure_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
                 else:
                     print("approved suggested tasks in batch...")
-                    return after_approval_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+                    return after_approval_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
 
 @app.route('/errors', methods=['POST'])

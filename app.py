@@ -356,7 +356,8 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     final_batch_instance_id_list.append(key)  #appends the instance ids which whose Po amounts satisfies the condition
                     final_batch_amount_list.append(instance_id_corresponding_scrapped_net_amt_dict[key])
             final_batch_instance_amount_dict = dict(zip(final_batch_instance_id_list,final_batch_amount_list))
-            
+            print("///////////////////////// hey     hey //////////")
+            print(final_batch_instance_id_list)
             #if there are no tasks to safely approve
             if (len(final_batch_instance_id_list) <= 0):
                 #call get tasks one by one function

@@ -832,7 +832,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 else:
                     # print("approved suggested tasks in batch...")
                     reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
-                    after_batch_approval_success_reply = after_approval_reply + '\n' + after_approval_reply
+                    after_batch_approval_success_reply = after_approval_reply + '\n' + reply
                     return after_batch_approval_success_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
 

@@ -662,7 +662,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 url_post = ["https://p2001172697trial-trial.apim1.hanatrial.ondemand.com/p2001172697trial/Workflow_approval/Decision?sap-client=400&SAP__Origin='S4HMYINBOCLNT200'&InstanceID="+ "'"+present_task_instance_id +"'""&DecisionKey='0001'&Comments='test%20approve'"]
                 post_res = (grequests.post(u_post,auth=('pritamsa','rupu@0801'),headers=header_2,cookies=cookie)for u_post in url_post)
 
-                reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                
                 post_reque = grequests.map(post_res,size=1)
                 response_array_post = []
                 for response_post in post_reque:
@@ -673,8 +673,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                         
                     else:
                         
-                        final_reply_after_batch_approval_success = after_approval_reply + '\n' + reply
-                        return final_reply_after_batch_approval_success,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
 
     
     
@@ -832,8 +831,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                 else:
                     # print("approved suggested tasks in batch...")
-                    
-                    return after_approval_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+                    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                    after_batch_approval_success_reply = after_approval_reply + '\n' + after_approval_reply
+                    return after_batch_approval_success_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
 
 @app.route('/errors', methods=['POST'])

@@ -356,8 +356,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     final_batch_instance_id_list.append(key)  #appends the instance ids which whose Po amounts satisfies the condition
                     final_batch_amount_list.append(instance_id_corresponding_scrapped_net_amt_dict[key])
             final_batch_instance_amount_dict = dict(zip(final_batch_instance_id_list,final_batch_amount_list))
-            print("///////////////////////// hey     hey //////////")
-            print(final_batch_instance_id_list)
+            
             #if there are no tasks to safely approve
             if (len(final_batch_instance_id_list) <= 0):
                 #call get tasks one by one function
@@ -672,8 +671,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                         return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
                         
                     else:
-
-                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                        final_reply_after_batch_approval_success = after_approval_reply + '\n' + reply
+                        return final_reply_after_batch_approval_success,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
 
     
     
@@ -826,11 +826,12 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             for response_post in post_reque:
 
                 if (response_post.status_code != 200):
-                    print("hey problem in approving the request. Please try again later.")
+                    # print("hey problem in approving the request. Please try again later.")
                     return approval_failure_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
                 else:
-                    print("approved suggested tasks in batch...")
+                    # print("approved suggested tasks in batch...")
+                    
                     return after_approval_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
 
 

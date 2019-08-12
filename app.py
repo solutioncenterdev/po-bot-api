@@ -356,9 +356,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     final_batch_instance_id_list.append(key)  #appends the instance ids which whose Po amounts satisfies the condition
                     final_batch_amount_list.append(instance_id_corresponding_scrapped_net_amt_dict[key])
             final_batch_instance_amount_dict = dict(zip(final_batch_instance_id_list,final_batch_amount_list))
-            print(len(final_batch_instance_id_list))
+            
             #if there are no tasks to safely approve
-            if (len(final_batch_instance_id_list <= 0)):
+            if (len(final_batch_instance_id_list) <= 0):
                 #call get tasks one by one function
 
                 reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)

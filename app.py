@@ -363,7 +363,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                 reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
 
-                return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+                return  final_reply_string,1,instance_id,created_by_user,SupplierName, PurchaseOrderNetAmount,all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 
             else:
                 print('*********************************************')

@@ -205,6 +205,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             #task details
             instance_id = body1["d"]["results"][0]["InstanceID"] 
             task_title = body1["d"]["results"][0]["TaskTitle"]
+
+            print('love, ++++++++++++++++++++++++++++++ love')
+            print(body1["d"]["results"][no_of_tasks - 1]["InstanceID"])
             
             scrapped_po_no = task_title.split("order ",1)[1]
             

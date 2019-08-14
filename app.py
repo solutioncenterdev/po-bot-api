@@ -98,7 +98,7 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
         final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
 
 
-        return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+        return  final_reply_string,1,body1["d"]["results"][0]["InstanceID"],created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 
     else:
         final_reply_string = 'no more tasks to approve in your inbox.'
@@ -364,7 +364,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             if (len(final_batch_instance_id_list) <= 0):
                 #call get tasks one by one function
 
-                reply,index,body1["d"]["results"][1]["InstanceID"],created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                reply,index,instance_id,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
 
                 return  reply,1,instance_id,created_by_user,SupplierName, PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 

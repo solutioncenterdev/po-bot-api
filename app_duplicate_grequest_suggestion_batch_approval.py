@@ -369,7 +369,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 print('*********************************************')
                 print(final_batch_instance_amount_dict)
 
-                final_reply_string = "you have," + str(no_of_tasks) + "pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + "of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
+                final_reply_string = "you have," + str(no_of_tasks) + " pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + " of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
 
                 return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
             

@@ -220,7 +220,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             suggestion_reply = ''
 
             if (eval(PurchaseOrderNetAmount) <= 7000):
-                suggestion_reply = "I suggest you to approve or release this."
+                suggestion_reply = "I suggest you to approve this."
             else:
                 suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
 

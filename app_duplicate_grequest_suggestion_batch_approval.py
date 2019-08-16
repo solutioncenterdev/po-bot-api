@@ -98,7 +98,7 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
         final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
 
 
-        return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+        return  final_reply_string,1,body1["d"]["results"][0]["InstanceID"],created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 
     else:
         final_reply_string = 'no more tasks to approve in your inbox.'
@@ -205,6 +205,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             #task details
             instance_id = body1["d"]["results"][0]["InstanceID"] 
             task_title = body1["d"]["results"][0]["TaskTitle"]
+
+            print('love, ++++++++++++++++++++++++++++++ love')
+            print(body1["d"]["results"][no_of_tasks - 1]["InstanceID"])
             
             scrapped_po_no = task_title.split("order ",1)[1]
             
@@ -220,7 +223,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             suggestion_reply = ''
 
             if (eval(PurchaseOrderNetAmount) <= 7000):
-                suggestion_reply = "I suggest you to approve or release this."
+                suggestion_reply = "I suggest you to approve this."
             else:
                 suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
 
@@ -261,7 +264,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     + '.' + '\n' + 'PurchaseOrderNetAmount: ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + '.'+'\n'
 
             #final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
-            final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
+            final_reply_string = 'you have, '+ str(no_of_tasks) + ' pending approvals. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
 
 
             return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
@@ -361,7 +364,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             if (len(final_batch_instance_id_list) <= 0):
                 #call get tasks one by one function
 
-                reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                reply,index,instance_id,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
 
                 return  reply,1,instance_id,created_by_user,SupplierName, PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 

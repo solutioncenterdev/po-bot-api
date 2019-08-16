@@ -617,7 +617,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     #         return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     elif((bot_memo['index']) and present_skill == 'approve'):
-        after_approval_reply = 'successfully approved, please say,"get my tasks", to get your previous pending aapprovals from the beggining, or, say next to move on to your next task.'
+        after_approval_reply = 'successfully approved, please say,"get my tasks", to get your previous pending approvals from the beggining, or, say next to move on to your next task.'
         approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
         session = requests.Session()
         header = {'x-csrf-token':'Fetch'}

@@ -775,7 +775,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             #if get all item details is requested
             #extract items concatenate string removing braces
             for key in (bot_memo['all_item_details']).keys():
-                item_detail_string_final = item_detail_string_final +  key + ':\n' + (bot_memo['all_item_details'])[key] + '.\n'
+                item_detail_string_final = item_detail_string_final +  key + ':\n' + str((bot_memo['all_item_details'])[key]).strip('{}') + '.\n'
             return  item_detail_string_final,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],'',''
 
 

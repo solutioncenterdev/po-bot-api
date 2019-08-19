@@ -372,7 +372,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 print('*********************************************')
                 print(final_batch_instance_amount_dict)
 
-                final_reply_string = "you have," + str(no_of_tasks) + " pending approvals." + "You can safely approve," + str(len(final_batch_instance_id_list)) + " of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
+                final_reply_string = "you have," + str(no_of_tasks) + " pending approvals. " + "You can safely approve," + str(len(final_batch_instance_id_list)) + " of them on the go. Say, yes, to approve all, and no to get your tasks one by one."
 
                 return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
             
@@ -617,7 +617,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     #         return final_reply_string,bot_memo['index'],len(body1["d"]["results"]),created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency)
 
     elif((bot_memo['index']) and present_skill == 'approve'):
-        after_approval_reply = 'successfully approved, please say,"get my tasks", to get your previous pending aapprovals from the beggining, or, say next to move on to your next task.'
+        after_approval_reply = 'successfully approved, please say,"get my tasks", to get your previous pending approvals from the beggining, or, say next to move on to your next task.'
         approval_failure_reply = "there was an issue with the server, Please try again later to approve..."
         session = requests.Session()
         header = {'x-csrf-token':'Fetch'}

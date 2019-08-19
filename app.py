@@ -770,6 +770,14 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             
             return  str(item_level_reply_numerically),bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],'',''
 
+        else:
+            item_detail_string_final = ''
+            #if get all item details is requested
+            #extract items concatenate string removing braces
+            for key in (bot_memo['all_item_details']).keys():
+                item_detail_string_final = item_detail_string_final +  key + ':\n' + (bot_memo['all_item_details'])[key] + '.\n'
+            return  item_detail_string_final,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'], bot_memo['SupplierName'],bot_memo['PurchaseOrderNetAmount'],bot_memo['after_approval_reply'],bot_memo['all_item_details'],bot_memo['no_of_line_items'],bot_memo['scrapped_po_no'],'',''
+
 
     elif((bot_memo['final_batch_instance_amount_dict'] or bot_memo['final_batch_instance_id_list']) and present_skill == 'yes_approve_all'):
          

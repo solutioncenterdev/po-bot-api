@@ -748,7 +748,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
     # elif((bot_nlp['ordinal'] and len(bot_nlp['ordinal']) <= bot_memo['no_of_line_items']) and present_skill == 'get_item_details'):
     elif (present_skill == 'get_item_details'):
 
-        if not bot_nlp == {}:
+        if not bot_nlp:
             item_detail_string_final = ''
             #if get all item details is requested
             #extract items concatenate string removing braces

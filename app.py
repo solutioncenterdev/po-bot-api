@@ -862,9 +862,9 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
                 else:
                     # print("approved suggested tasks in batch...")
-                    reply,index,instanceID,created_by_user,SupplierName,PurchaseOrderNetAmount,after_approval_reply,all_item_details,no_of_line_items,scrapped_po_no, final_batch_instance_amount_dict,final_batch_instance_id_list = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
+                    reply,index_from_func,instanceID_from_func,created_by_user_from_func,SupplierName_from_func,PurchaseOrderNetAmount_from_func,after_approval_reply_from_func,all_item_details_from_func,no_of_line_items_from_func,scrapped_po_no_from_func, final_batch_instance_amount_dict_from_func,final_batch_instance_id_list_from_func = get_taskONEbyONE(bot_memo,present_skill,bot_nlp)
                     after_batch_approval_success_reply = 'successfully approved all tasks in batch.' + '\n' + reply
-                    return after_batch_approval_success_reply ,bot_memo['index'],bot_memo['instanceID'],bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],bot_memo['final_batch_instance_id_list'],bot_memo['final_batch_instance_amount_dict']
+                    return after_batch_approval_success_reply ,index_from_func,instanceID_from_func,created_by_user_from_func,SupplierName_from_func, PurchaseOrderNetAmount_from_func,after_approval_reply_from_func,all_item_details_from_func,no_of_line_items_from_func,scrapped_po_no_from_func,final_batch_instance_amount_dict_from_func,final_batch_instance_id_list_from_func
 
 
 @app.route('/errors', methods=['POST'])

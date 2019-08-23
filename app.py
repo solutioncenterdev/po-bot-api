@@ -381,8 +381,8 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 return  final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
             
         else:
-            final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,'','','', '','','','','',final_batch_instance_amount_dict,final_batch_instance_id_list
+            final_reply_string = 'no more pending Purchase order approvals in your inbox.'
+            return final_reply_string,1,'','','', '','','','','','',''
 
     
     elif ((bot_memo['index']) and (present_skill == 'get_next_task' or present_skill == 'ignore_task')):

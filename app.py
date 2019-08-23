@@ -427,7 +427,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. Anyways, you can always get the item details before taking any action"
 
             else:
-                suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
+                suggestion_reply = ""
 
             
             final_reply_string = ''
@@ -501,7 +501,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. Anyways, you can always get the item details before taking any action"
 
             else:
-                suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
+                suggestion_reply = ""
 
             
             final_reply_string = ''
@@ -544,7 +544,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             # final_reply_string = get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this P.O.\n'+ concat_string_for_multiple_lineitems + " say approve to approve this task or say ignore to skip this task and move on to your next task, or say next to get your next task with details."
             # final_reply_string = 'Now you have got, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items.\n'+ suggestion_reply
-            final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending tasks to approve. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
+            final_reply_string = 'Next Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
 
             #print(get_task_string)
 

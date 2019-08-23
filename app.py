@@ -475,7 +475,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
 
        
-        elif ((len(body1["d"]["results"])>1) and bot_memo['index'] < len(body1["d"]["results"])):
+        elif ((len(body1["d"]["results"])>1) and bot_memo['index'] <= len(body1["d"]["results"])):
             #task details
             instance_id = body1["d"]["results"][bot_memo['index'] - 1]["InstanceID"] 
             task_title = task_title = body1["d"]["results"][bot_memo['index'] - 1]["TaskTitle"]

@@ -54,9 +54,9 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
         suggestion_reply = ''
 
         if (eval(PurchaseOrderNetAmount) <= 7000):
-            suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. Anyways, you can always get the item details before taking any action"
+            suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. "
         else:
-            suggestion_reply = "I don't have a suggestion for this approval now. you can get details before taking any action."
+            suggestion_reply = ""
 
         final_reply_string = ''
         concat_string_for_multiple_lineitems = ''
@@ -96,7 +96,7 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
 
         
         # final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
-        final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending tasks to approve. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
+        final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending approvals. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
 
 
         return  final_reply_string,2,body1["d"]["results"][0]["InstanceID"],created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining

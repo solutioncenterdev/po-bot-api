@@ -271,11 +271,11 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
             final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending tasks to approve. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
 
 
-            return  final_reply_string,1,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
+            return  final_reply_string,2,instance_id,created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining
 
         else:
             final_reply_string = 'no more tasks to approve in your inbox.'
-            return final_reply_string,1,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo,'',''
+            return final_reply_string,0,bot_memo,bot_memo,bot_memo, bot_memo,'','','',bot_memo,'',''
 
     #gets all the available tasks in my inbox and suggests user after validation of conditions for batch approvals
     if ((bot_memo == {} or bot_memo['index']) and present_skill == 'get_task'):

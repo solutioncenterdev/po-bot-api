@@ -687,7 +687,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                     else:
                         # return after_approval_reply,bot_memo['index']-1,present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
 
-                        if bot_memo['index'] > 1:
+                        if bot_memo['index'] >= 1:
                         
                             return after_approval_reply,bot_memo['index']-1,present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
                             

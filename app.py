@@ -96,7 +96,7 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
 
         
         # final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending tasks to approve. ' + get_task_string + get_task_string_with_header_detail +'You have: ' + str(no_of_line_items) +' items in this purchase order.\n'+ suggestion_reply
-        final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending approvals. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ' for vendor : '+ SupplierName + ' and has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
+        final_reply_string = 'Presently, you have, '+ str(no_of_tasks) + ' pending approvals. This Purchase order has a net amount of ' + PurchaseOrderNetAmount + ' ' + DocumentCurrency + ', for vendor : '+ SupplierName + ', and, has '+ str(no_of_line_items)+ ' items.\n' + suggestion_reply
 
 
         return  final_reply_string,2,body1["d"]["results"][0]["InstanceID"],created_by_user,SupplierName, (PurchaseOrderNetAmount + ' ' + DocumentCurrency),'',all_item_details,no_of_line_items,scrapped_po_no,'','' #return 1for memory index as no memo is present in the beggining

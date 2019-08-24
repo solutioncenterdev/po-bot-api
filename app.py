@@ -228,7 +228,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                 suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. Anyways, you can always get the item details before taking any action"
 
             else:
-                suggestion_reply = "I dont have a suggestion for this approval now. you can get details before taking any action."
+                suggestion_reply = ""
 
             final_reply_string = ''
             concat_string_for_multiple_lineitems = ''

@@ -56,7 +56,7 @@ def get_taskONEbyONE(bot_memo,present_skill,bot_nlp):
         if (eval(PurchaseOrderNetAmount) <= 7000):
             suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. "
         else:
-            suggestion_reply = ""
+            suggestion_reply = "I recommend you to get the details of the purchase order before approving."
 
         final_reply_string = ''
         concat_string_for_multiple_lineitems = ''
@@ -225,7 +225,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
 
             if (eval(PurchaseOrderNetAmount) <= 7000):
                 # suggestion_reply = "I suggest you to approve this."
-                suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before. Anyways, you can always get the item details before taking any action"
+                suggestion_reply = "I recommend you to approve this PO since, you have approved similar orders before."
 
             else:
                 suggestion_reply = ""
@@ -685,7 +685,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                         return approval_failure_reply ,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],approval_failure_reply,'','',bot_memo['scrapped_po_no'],''
                         
                     else:
-                        return after_approval_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        return after_approval_reply,bot_memo['index']-1,present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_approval_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
 
                         # if bot_memo['index'] >= 1:
                         
@@ -756,7 +756,7 @@ def query_get_task_with_details(bot_memo,present_skill,bot_nlp):
                         
                     else:
 
-                        return after_rejection_reply,bot_memo['index'],present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_rejection_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
+                        return after_rejection_reply,bot_memo['index']-1,present_task_instance_id,bot_memo['created_by'],bot_memo['SupplierName'], bot_memo['PurchaseOrderNetAmount'],after_rejection_reply,'','',bot_memo['scrapped_po_no'],'','' #after this call the "next" task showing skill in bot
 
     
     # THIS LOGIC BELOW NEEDS TO BE RE_WRITTEN
